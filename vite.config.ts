@@ -1,13 +1,18 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
-const repoName = "neuralis-website";
+export default defineConfig(({ mode }) => {
+  const repoName =
+    process.env.GITHUB_REPOSITORY?.split("/")[1] ?? "";
+  const base =
+    mode === "production" && repoName ? `/${repoName}/` : "/";
 
-export default defineConfig(({ mode }) => ({
-  base: mode === "production" ? `/${repoName}/` : "/",
-  plugins: [react()],
-  server: {
-    port: 5173,
-    open: true
-  }
-}));
+  return {
+    base,
+    plugins: [react()],
+    server: {
+      port: 5173,
+      open: true
+    }
+  };
+});
