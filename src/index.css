@@ -72,10 +72,40 @@ body,
 }
 
 body {
+  position: relative;
   font-family: "Space Grotesk", "Inter", sans-serif;
   color: var(--color-text-primary);
   scroll-behavior: smooth;
   transition: background-color 0.5s ease, color 0.35s ease;
+}
+
+/* subtle Neuralis-inspired gradient mesh behind particles */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 10% 15%, rgba(56, 189, 248, 0.28), transparent 55%),
+    radial-gradient(circle at 88% 18%, rgba(139, 92, 246, 0.24), transparent 60%),
+    radial-gradient(circle at 65% 80%, rgba(52, 211, 153, 0.18), transparent 60%),
+    radial-gradient(circle at 30% 85%, rgba(59, 130, 246, 0.18), transparent 65%);
+  filter: saturate(120%);
+}
+
+[data-theme="light"] body::before {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(191, 219, 254, 0.75), transparent 55%),
+    radial-gradient(circle at 82% 16%, rgba(221, 214, 254, 0.65), transparent 58%),
+    radial-gradient(circle at 68% 78%, rgba(167, 243, 208, 0.5), transparent 60%),
+    radial-gradient(circle at 28% 80%, rgba(147, 197, 253, 0.45), transparent 65%);
+  filter: saturate(115%);
+}
+
+#root {
+  position: relative;
+  z-index: 1;
 }
 
 ::selection {

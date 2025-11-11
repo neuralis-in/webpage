@@ -1,11 +1,13 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
-export default defineConfig(({ mode }) => {
-  const repoName =
-    process.env.GITHUB_REPOSITORY?.split("/")[1] ?? "";
+export default defineConfig(({ command }) => {
+  // Allow deployments to override the public base path explicitly.
+  // Default to a relative path for production so bundles work from both root
+  // domains (neuralis.in) and nested deployments (GitHub Pages).
   const base =
-    mode === "production" && repoName ? `/${repoName}/` : "/";
+    process.env.VITE_BASE_PATH ??
+    (command === "build" ? "./" : "/");
 
   return {
     base,
