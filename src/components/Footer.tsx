@@ -1,29 +1,44 @@
-export const Footer = () => (
-  <footer className="border-t border-white/10 bg-slate-950/80 py-10">
-    <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 text-sm text-slate-200 md:flex-row md:items-center md:justify-between lg:px-0">
-      <div>
-        <p className="text-base font-semibold text-white">Neuralis</p>
-        <p className="mt-1 max-w-lg text-sm text-slate-200">
-          Scientific Computing, Compilers, and Open-source Agentic AI Consulting
-        </p>
+import logo from "../assets/neuralis-logo.png";
+
+export const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className="relative py-16">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="flex items-center gap-2.5">
+            <img
+              src={logo}
+              alt="Neuralis"
+              className="h-6 w-6 rounded-full object-contain"
+            />
+            <span className="text-sm font-semibold text-white/80">Neuralis</span>
+          </div>
+
+          <div className="flex items-center gap-6 text-sm text-white/25">
+            <a
+              href="mailto:contact@neuralis.in"
+              className="hover:text-white/50 transition-colors"
+            >
+              contact@neuralis.in
+            </a>
+            <span className="w-px h-3 bg-white/10" />
+            <a
+              href="tel:+919879765662"
+              className="hover:text-white/50 transition-colors"
+            >
+              +91 98797 65662
+            </a>
+          </div>
+
+          <span className="text-xs text-white/15">
+            &copy; {currentYear} Neuralis Inc.
+          </span>
+        </div>
       </div>
-      <div className="flex flex-wrap items-center gap-6">
-        <a
-          href="mailto:pranavchiku11@gmail.com"
-          className="text-slate-200 transition hover:text-primary"
-        >
-          pranavchiku11@gmail.com
-        </a>
-        <a
-          href="https://github.com/neuralis"
-          target="_blank"
-          rel="noreferrer"
-          className="text-slate-200 transition hover:text-primary"
-        >
-          GitHub
-        </a>
-        <p className="text-slate-300">© {new Date().getFullYear()} Neuralis. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
-);
+    </footer>
+  );
+};

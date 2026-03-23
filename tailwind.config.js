@@ -1,41 +1,40 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       fontFamily: {
-        sans: ["'Space Grotesk'", "Inter", "sans-serif"]
+        sans: ["'Space Grotesk'", "Inter", "sans-serif"],
+        mono: ["'Space Mono'", "monospace"],
       },
       colors: {
-        background: "hsl(229 52% 6%)",
-        surface: "hsl(232 56% 12%)",
-        primary: "hsl(191 87% 55%)",
-        secondary: "hsl(267 83% 67%)",
-        accent: "hsl(154 70% 60%)"
+        background: "var(--color-bg-base)",
+        surface: "var(--color-bg-surface)",
+        primary: "var(--color-primary)",
+        secondary: "var(--color-secondary)",
+        accent: "var(--color-accent)",
+        border: "var(--color-border)",
       },
-      boxShadow: {
-        glow: "0 0 25px rgba(56, 189, 248, 0.35)"
-      },
-      backgroundImage: {
-        "grid-pattern":
-          "linear-gradient(rgba(168, 85, 247, 0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 185, 129, 0.12) 1px, transparent 1px)"
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
       animation: {
-        "slow-pulse": "slow-pulse 4s ease-in-out infinite",
-        "float": "float 6s ease-in-out infinite"
+        "fade-in": "fade-in 0.6s ease-out forwards",
+        "fade-in-up": "fade-in-up 0.8s ease-out forwards",
       },
       keyframes: {
-        "slow-pulse": {
-          "0%, 100%": { opacity: 0.9 },
-          "50%": { opacity: 0.4 }
+        "fade-in": {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
         },
-        float: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-12px)" }
-        }
-      }
-    }
+        "fade-in-up": {
+          "0%": { opacity: 0, transform: "translateY(20px)" },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
+      },
+    },
   },
-  plugins: []
+  plugins: [],
 };

@@ -12,7 +12,7 @@ export const SectionHeading = ({
   eyebrow,
   title,
   description,
-  className
+  className,
 }: SectionHeadingProps) => (
   <motion.div
     initial={{ opacity: 0, y: 24 }}
@@ -22,15 +22,17 @@ export const SectionHeading = ({
     className={cn("mx-auto max-w-3xl text-center", className)}
   >
     {eyebrow && (
-      <span className="mb-3 inline-flex items-center rounded-full border border-primary/40 bg-primary/20 px-4 py-1 text-xs font-semibold uppercase tracking-[0.38em] text-primary">
+      <span className="mb-4 inline-block text-xs font-medium tracking-[0.3em] uppercase text-white/40">
         {eyebrow}
       </span>
     )}
-    <h2 className="text-3xl font-semibold leading-tight text-white md:text-4xl">
+    <h2 className="text-3xl font-semibold leading-tight text-white md:text-5xl">
       {title}
     </h2>
     {description && (
-      <p className="mt-4 text-base text-slate-200 md:text-lg">{description}</p>
+      <p className="mt-5 text-base text-white/50 md:text-lg leading-relaxed">
+        {description}
+      </p>
     )}
   </motion.div>
 );
