@@ -11,7 +11,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/+$/, "")}>
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/deck" element={<Deck />} />

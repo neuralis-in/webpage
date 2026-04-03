@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 import { cn } from "../lib/utils";
 import logo from "../assets/neuralis-logo.png";
 import intraintelLogo from "../assets/intraintel-logo.svg";
@@ -621,7 +622,7 @@ export function Deck() {
   return (
     <div className="noise relative h-screen w-screen bg-[#050505] text-white antialiased overflow-hidden select-none">
       <div className="fixed top-5 left-6 z-50 flex items-center gap-2">
-        <a href="/" className="flex items-center gap-2 group">
+        <Link to="/" className="flex items-center gap-2 group">
           <img
             src={logo}
             alt="Neuralis"
@@ -630,7 +631,7 @@ export function Deck() {
           <span className="text-xs font-semibold tracking-tight text-white/50 group-hover:text-white/80 transition-colors">
             Neuralis
           </span>
-        </a>
+        </Link>
       </div>
 
       <ProgressDots
