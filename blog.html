@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Field notes from the Neuralis engineering bench — essays on compilers, agents, scientific computing, and shipping precision systems."
+    />
+    <meta name="theme-color" content="#f9fafb" />
+    <meta property="og:title" content="Field notes — Neuralis" />
+    <meta
+      property="og:description"
+      content="Essays on compilers, agents, and high-performance systems from the Neuralis engineering bench."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://neuralis.in/blog.html" />
+    <title>Field notes — Neuralis</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fragment+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body>
+    <!-- ==================== Nav ==================== -->
+    <nav class="nav" id="nav">
+      <div class="container nav-inner">
+        <a href="index.html" class="wordmark">Neuralis</a>
+        <div class="nav-links">
+          <a href="index.html#work">Work</a>
+          <a href="index.html#services">Services</a>
+          <a href="index.html#process">Process</a>
+          <a href="blog.html" class="is-current">Blog</a>
+          <a href="index.html#contact">Contact</a>
+          <a href="index.html#contact" class="nav-cta nav-cta-desktop">
+            Start a conversation
+          </a>
+        </div>
+        <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="index.html#work" data-close>Work</a>
+      <a href="index.html#services" data-close>Services</a>
+      <a href="index.html#process" data-close>Process</a>
+      <a href="blog.html" data-close>Blog</a>
+      <a href="index.html#contact" data-close>Contact</a>
+      <a href="index.html#contact" class="nav-cta" data-close>Start a conversation</a>
+    </div>
+
+    <!-- ==================== Page hero ==================== -->
+    <section class="page-hero">
+      <div class="container">
+        <div class="breadcrumb reveal-sm">
+          <span class="label"><span class="dot"></span>Field notes</span>
+        </div>
+        <h1 class="reveal" style="--reveal-delay: 0.08s">
+          Field notes
+          <span class="muted">from the bench.</span>
+        </h1>
+        <p class="lede reveal" style="--reveal-delay: 0.2s">
+          Essays on compilers, agents, scientific computing, and shipping
+          precision systems. Written by the engineers actually doing the
+          work.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================== Post list ==================== -->
+    <section class="container section-inner" style="padding-top: 64px">
+      <div class="post-list">
+        <a
+          class="post-item reveal"
+          href="blog/building-multi-agent-systems.html"
+          style="--reveal-delay: 0s"
+        >
+          <div class="post-meta">
+            <span class="post-tag">Agentic AI</span>
+            <span class="sep"></span>
+            <span>14 May 2026</span>
+            <span class="sep"></span>
+            <span>By Dev Roy</span>
+          </div>
+          <h2 class="post-title">
+            Building production-grade multi-agent systems.
+          </h2>
+          <p class="post-excerpt">
+            The leap from a demo agent to a production agent isn't
+            engineering. It's architectural surrender. What changes when
+            an LLM is allowed to touch your infrastructure — and why most
+            agent frameworks ship the wrong defaults.
+          </p>
+          <div class="post-foot">
+            <span class="read-link">
+              Read article <span class="arrow">→</span>
+            </span>
+            <span class="reading-time">9 min read</span>
+          </div>
+        </a>
+
+        <a
+          class="post-item reveal"
+          href="blog/llvm-for-compiler-engineering.html"
+          style="--reveal-delay: 0.08s"
+        >
+          <div class="post-meta">
+            <span class="post-tag">Compiler Engineering</span>
+            <span class="sep"></span>
+            <span>02 May 2026</span>
+            <span class="sep"></span>
+            <span>By Pranav Chiku</span>
+          </div>
+          <h2 class="post-title">
+            Why we bet on LLVM for compiler engineering.
+          </h2>
+          <p class="post-excerpt">
+            Writing a compiler from scratch sounds romantic. In practice
+            it's six months of redoing what LLVM solved in 2003. A
+            field-tested case for the IR-first approach to custom
+            toolchains, DSLs, and accelerator targets.
+          </p>
+          <div class="post-foot">
+            <span class="read-link">
+              Read article <span class="arrow">→</span>
+            </span>
+            <span class="reading-time">8 min read</span>
+          </div>
+        </a>
+
+        <a
+          class="post-item reveal"
+          href="blog/beyond-cuda-heterogeneous-gpu.html"
+          style="--reveal-delay: 0.16s"
+        >
+          <div class="post-meta">
+            <span class="post-tag">Scientific Computing</span>
+            <span class="sep"></span>
+            <span>21 April 2026</span>
+            <span class="sep"></span>
+            <span>By The Neuralis Team</span>
+          </div>
+          <h2 class="post-title">
+            Beyond CUDA — the future of heterogeneous GPU computing.
+          </h2>
+          <p class="post-excerpt">
+            CUDA has been the lingua franca of GPU compute for fifteen
+            years. That's about to change. A pragmatic look at SYCL,
+            ROCm, oneAPI — and what portable kernels actually cost in
+            production.
+          </p>
+          <div class="post-foot">
+            <span class="read-link">
+              Read article <span class="arrow">→</span>
+            </span>
+            <span class="reading-time">10 min read</span>
+          </div>
+        </a>
+
+        <a
+          class="post-item reveal"
+          href="blog/hidden-cost-of-rag.html"
+          style="--reveal-delay: 0.24s"
+        >
+          <div class="post-meta">
+            <span class="post-tag">Agentic AI</span>
+            <span class="sep"></span>
+            <span>09 April 2026</span>
+            <span class="sep"></span>
+            <span>By Dev Roy</span>
+          </div>
+          <h2 class="post-title">
+            The hidden cost of RAG — lessons from production.
+          </h2>
+          <p class="post-excerpt">
+            Retrieval-augmented generation looks like a free upgrade. In
+            production it fails in expensive, subtle ways. Five
+            deployments of lessons on hybrid retrieval, evaluation,
+            latency budgets, and when fine-tuning actually wins.
+          </p>
+          <div class="post-foot">
+            <span class="read-link">
+              Read article <span class="arrow">→</span>
+            </span>
+            <span class="reading-time">8 min read</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ==================== Footer ==================== -->
+    <footer>
+      <div class="container footer-inner">
+        <div>© 2026 Neuralis</div>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://x.com" target="_blank" rel="noopener">X</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var nav = document.getElementById("nav");
+        var hamburger = document.getElementById("hamburger");
+        var body = document.body;
+        var menuLinks = document.querySelectorAll("[data-close]");
+
+        function onScroll() {
+          if (window.scrollY > 60) nav.classList.add("scrolled");
+          else nav.classList.remove("scrolled");
+        }
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+
+        hamburger.addEventListener("click", function () {
+          body.classList.toggle("menu-open");
+        });
+        menuLinks.forEach(function (a) {
+          a.addEventListener("click", function () {
+            body.classList.remove("menu-open");
+          });
+        });
+
+        var revealEls = document.querySelectorAll(
+          ".reveal, .reveal-sm, .reveal-card"
+        );
+        if (!("IntersectionObserver" in window)) {
+          revealEls.forEach(function (el) {
+            el.classList.add("is-visible");
+          });
+          return;
+        }
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+        );
+        revealEls.forEach(function (el) {
+          io.observe(el);
+        });
+      })();
+    </script>
+  </body>
+</html>

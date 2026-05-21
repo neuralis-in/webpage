@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Retrieval-augmented generation looks like a free upgrade. In production it fails in expensive, subtle ways."
+    />
+    <meta name="theme-color" content="#f9fafb" />
+    <meta property="og:title" content="The hidden cost of RAG — lessons from production — Neuralis" />
+    <meta
+      property="og:description"
+      content="Five deployments of lessons on hybrid retrieval, evaluation, latency budgets, and when fine-tuning actually wins."
+    />
+    <meta property="og:type" content="article" />
+    <title>The hidden cost of RAG — lessons from production — Neuralis</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fragment+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body>
+    <nav class="nav" id="nav">
+      <div class="container nav-inner">
+        <a href="../index.html" class="wordmark">Neuralis</a>
+        <div class="nav-links">
+          <a href="../index.html#work">Work</a>
+          <a href="../index.html#services">Services</a>
+          <a href="../index.html#process">Process</a>
+          <a href="../blog.html" class="is-current">Blog</a>
+          <a href="../index.html#contact">Contact</a>
+          <a href="../index.html#contact" class="nav-cta nav-cta-desktop">
+            Start a conversation
+          </a>
+        </div>
+        <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="../index.html#work" data-close>Work</a>
+      <a href="../index.html#services" data-close>Services</a>
+      <a href="../index.html#process" data-close>Process</a>
+      <a href="../blog.html" data-close>Blog</a>
+      <a href="../index.html#contact" data-close>Contact</a>
+      <a href="../index.html#contact" class="nav-cta" data-close>Start a conversation</a>
+    </div>
+
+    <article>
+      <header class="page-hero">
+        <div class="container container--narrow">
+          <div class="breadcrumb reveal-sm">
+            <span class="label">
+              <span class="dot"></span>
+              <a href="../blog.html" style="opacity: 0.7">Field notes</a>
+              &nbsp;/&nbsp;Agentic AI
+            </span>
+          </div>
+          <h1 class="reveal" style="--reveal-delay: 0.08s">
+            The hidden cost of RAG — lessons from production.
+          </h1>
+          <p class="lede reveal" style="--reveal-delay: 0.2s">
+            Retrieval-augmented generation looks like a free upgrade. In
+            production it fails in expensive, subtle ways. Five
+            deployments of lessons — on hybrid retrieval, evaluation,
+            latency budgets, and when fine-tuning wins instead.
+          </p>
+          <div class="post-meta reveal-sm" style="--reveal-delay: 0.3s">
+            <strong>Dev Roy</strong>
+            <span class="sep"></span>
+            <span>09 April 2026</span>
+            <span class="sep"></span>
+            <span>8 min read</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="article">
+        <div class="container">
+          <div class="prose">
+            <p>
+              Embed your documents, retrieve top-K, prepend to prompt,
+              get smarter answers. In demos this works beautifully. In
+              production it fails in ways that are expensive, subtle,
+              and very hard to debug from the model side.
+            </p>
+            <p>
+              We've shipped five production RAG systems across DevOps
+              tooling, financial research, customer support, internal
+              documentation, and research assistance. Every one of them
+              taught us the same lesson in a different shape: <em>RAG is
+              a retrieval problem first, a generation problem second.</em>
+            </p>
+
+            <h2>Retrieval quality compounds errors</h2>
+            <p>
+              The model can only reason about what's in its context. If
+              retrieval is 70% accurate, your end-to-end accuracy is at
+              most 70% — and almost always meaningfully less, because
+              the model has to identify and ignore the bad retrievals,
+              which it often can't.
+            </p>
+            <p>
+              We've seen retrieval-side errors masquerade as "the model
+              isn't smart enough" for months. Almost always, the model
+              was fine. The retrieval was wrong, and the model was
+              dutifully hallucinating around the missing context.
+            </p>
+            <p>
+              Diagnosing this is the first thing we do on a struggling
+              RAG deployment: pull the actual retrieved chunks for a
+              week of real queries and read them. If a human can't
+              answer the user's question from those chunks, the model
+              can't either.
+            </p>
+
+            <h2>Hybrid retrieval is not optional</h2>
+            <p>
+              Pure vector search has well-known failure modes:
+            </p>
+            <ul>
+              <li>
+                <strong>Exact-match queries.</strong> Product IDs, error
+                codes, named entities, function names. Embeddings smear
+                these into nearby concepts. BM25 doesn't.
+              </li>
+              <li>
+                <strong>Rare entities.</strong> Anything not
+                well-represented in the embedding model's training
+                corpus. Internal jargon, niche domain vocabulary,
+                acronyms.
+              </li>
+              <li>
+                <strong>Negation and complex logic.</strong> "Show me
+                invoices <em>not</em> yet paid." Embeddings struggle
+                with negation. Structured retrieval doesn't.
+              </li>
+            </ul>
+            <p>
+              Hybrid search — BM25 plus vector — handles all three. Add
+              a <strong>reranker</strong> (a small cross-encoder, not
+              your generation model) over the top, and retrieval
+              accuracy roughly doubles on most internal benchmarks we've
+              measured.
+            </p>
+            <p>
+              This isn't theoretical. Across five deployments we've
+              measured recall@10 going from ~60-70% with pure vector
+              search to ~85-95% with hybrid + reranking, on
+              representative production traffic.
+            </p>
+
+            <h2>Evaluation is the work</h2>
+            <p>
+              You cannot ship RAG without continuous evaluation. The
+              most common failure pattern we see: an embedding model
+              update (often from a library upgrade) silently regresses
+              retrieval, and the team only finds out from user
+              complaints weeks later.
+            </p>
+            <p>What we ship with every RAG system:</p>
+            <ul>
+              <li>
+                <strong>A labeled evaluation set</strong>, kept fresh
+                from real user queries. Curated, not synthetic.
+                Re-labeled quarterly as the product evolves.
+              </li>
+              <li>
+                <strong>Offline retrieval metrics</strong> (recall@k,
+                MRR, nDCG) on every embedding model change, every
+                retriever change, every index update.
+              </li>
+              <li>
+                <strong>Online behavioral metrics</strong> tied to user
+                behavior — click-through on cited sources, completion
+                rate, follow-up question patterns, escalation rate.
+              </li>
+              <li>
+                <strong>Corpus drift detection.</strong> When content
+                changes substantially, retrieval may need re-tuning
+                even if the retriever itself didn't change.
+              </li>
+            </ul>
+            <blockquote>
+              If a team can't show you their RAG evaluation pipeline,
+              they don't have RAG in production. They have RAG in hope.
+            </blockquote>
+
+            <h2>The latency budget</h2>
+            <p>
+              Every RAG step costs milliseconds. The budget compounds in
+              ways teams routinely under-estimate:
+            </p>
+            <ul>
+              <li><strong>Query embedding:</strong> 30-80ms.</li>
+              <li>
+                <strong>Vector search:</strong> 20-200ms depending on
+                index size and recall target.
+              </li>
+              <li>
+                <strong>Reranking:</strong> 50-150ms for a quality
+                cross-encoder over the top 20-50 candidates.
+              </li>
+              <li>
+                <strong>LLM call with augmented context:</strong>
+                500-3000ms depending on model size and context length.
+              </li>
+            </ul>
+            <p>
+              Production RAG that isn't 200-500ms over baseline LLM
+              latency is either tiny-corpus or not really retrieving.
+              Plan for that latency from day one. Streaming the response
+              helps perceived latency, but only if your retrieval
+              pipeline is asynchronous and parallel where it can be.
+            </p>
+
+            <h2>When fine-tuning wins</h2>
+            <p>
+              RAG is the right tool for one specific class of problem:
+              <strong>large, evolving, must-be-cited knowledge</strong>.
+              For other problems, it's not the best tool — and the cost
+              of using it anyway is real.
+            </p>
+            <p>
+              For narrow, stable knowledge — internal procedures,
+              well-defined troubleshooting trees, domain vocabularies —
+              fine-tuning routinely beats RAG. The model learns the
+              patterns, not just the facts. No retrieval failure mode,
+              lower latency, smaller infrastructure footprint.
+            </p>
+            <p>The decision rule we use:</p>
+            <ul>
+              <li>
+                <strong>Fine-tune when:</strong> the knowledge is
+                relatively stable, narrow in scope, and reasoning over
+                the patterns matters more than citing the source
+                verbatim.
+              </li>
+              <li>
+                <strong>RAG when:</strong> the knowledge changes
+                frequently, must be cited verbatim, or spans more than
+                roughly 10MB of source material.
+              </li>
+              <li>
+                <strong>Both when:</strong> the system needs to know
+                the stable patterns (fine-tune) and reach into the
+                changing facts (RAG). Most production systems we ship
+                land here.
+              </li>
+            </ul>
+
+            <h2>The summary</h2>
+            <p>
+              RAG is not a silver bullet. It's an architecture for a
+              specific class of problems, with a real engineering
+              cost that demos hide and production reveals.
+            </p>
+            <p>
+              The teams that ship great RAG systems treat retrieval as
+              a first-class engineering discipline — with evaluation,
+              monitoring, latency budgets, and architectural rigor —
+              not as a side effect of "we added a vector database."
+            </p>
+            <p>
+              The good news: when you do treat it that way, RAG works
+              extraordinarily well. The systems we've shipped are
+              answering questions across millions of documents with
+              latency and accuracy that would be inconceivable with
+              traditional search. The discipline is just larger than
+              the marketing suggests.
+            </p>
+          </div>
+
+          <div class="article-foot">
+            <div class="tag-row">
+              <span class="tag">Agentic AI</span>
+              <span class="tag">RAG</span>
+              <span class="tag">Retrieval</span>
+              <span class="tag">Evaluation</span>
+              <span class="tag">Production</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <section class="related">
+      <div class="container">
+        <div class="related-head">
+          <span class="label reveal-sm"><span class="dot"></span>Keep reading</span>
+          <h2 class="reveal" style="--reveal-delay: 0.08s">More from the bench.</h2>
+        </div>
+        <div class="related-grid">
+          <a class="related-card reveal-card" href="building-multi-agent-systems.html" style="--reveal-delay: 0s">
+            <span class="tag">Agentic AI</span>
+            <div class="title">Building production-grade multi-agent systems.</div>
+            <div class="meta">14 May 2026 · 9 min</div>
+          </a>
+          <a class="related-card reveal-card" href="llvm-for-compiler-engineering.html" style="--reveal-delay: 0.08s">
+            <span class="tag">Compiler Engineering</span>
+            <div class="title">Why we bet on LLVM for compiler engineering.</div>
+            <div class="meta">02 May 2026 · 8 min</div>
+          </a>
+          <a class="related-card reveal-card" href="beyond-cuda-heterogeneous-gpu.html" style="--reveal-delay: 0.16s">
+            <span class="tag">Scientific Computing</span>
+            <div class="title">Beyond CUDA — the future of heterogeneous GPU computing.</div>
+            <div class="meta">21 April 2026 · 10 min</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container footer-inner">
+        <div>© 2026 Neuralis</div>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://x.com" target="_blank" rel="noopener">X</a>
+          <a href="../index.html#contact">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var nav = document.getElementById("nav");
+        var hamburger = document.getElementById("hamburger");
+        var body = document.body;
+        var menuLinks = document.querySelectorAll("[data-close]");
+        function onScroll() {
+          if (window.scrollY > 60) nav.classList.add("scrolled");
+          else nav.classList.remove("scrolled");
+        }
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+        hamburger.addEventListener("click", function () {
+          body.classList.toggle("menu-open");
+        });
+        menuLinks.forEach(function (a) {
+          a.addEventListener("click", function () {
+            body.classList.remove("menu-open");
+          });
+        });
+        var revealEls = document.querySelectorAll(".reveal, .reveal-sm, .reveal-card");
+        if (!("IntersectionObserver" in window)) {
+          revealEls.forEach(function (el) { el.classList.add("is-visible"); });
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+        revealEls.forEach(function (el) { io.observe(el); });
+      })();
+    </script>
+  </body>
+</html>

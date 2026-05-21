@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="CUDA has been the lingua franca of GPU compute for fifteen years. That's about to change. A pragmatic look at SYCL, ROCm, oneAPI."
+    />
+    <meta name="theme-color" content="#f9fafb" />
+    <meta property="og:title" content="Beyond CUDA — the future of heterogeneous GPU computing — Neuralis" />
+    <meta
+      property="og:description"
+      content="What portable GPU kernels actually cost in production."
+    />
+    <meta property="og:type" content="article" />
+    <title>Beyond CUDA — the future of heterogeneous GPU computing — Neuralis</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fragment+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body>
+    <nav class="nav" id="nav">
+      <div class="container nav-inner">
+        <a href="../index.html" class="wordmark">Neuralis</a>
+        <div class="nav-links">
+          <a href="../index.html#work">Work</a>
+          <a href="../index.html#services">Services</a>
+          <a href="../index.html#process">Process</a>
+          <a href="../blog.html" class="is-current">Blog</a>
+          <a href="../index.html#contact">Contact</a>
+          <a href="../index.html#contact" class="nav-cta nav-cta-desktop">
+            Start a conversation
+          </a>
+        </div>
+        <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="../index.html#work" data-close>Work</a>
+      <a href="../index.html#services" data-close>Services</a>
+      <a href="../index.html#process" data-close>Process</a>
+      <a href="../blog.html" data-close>Blog</a>
+      <a href="../index.html#contact" data-close>Contact</a>
+      <a href="../index.html#contact" class="nav-cta" data-close>Start a conversation</a>
+    </div>
+
+    <article>
+      <header class="page-hero">
+        <div class="container container--narrow">
+          <div class="breadcrumb reveal-sm">
+            <span class="label">
+              <span class="dot"></span>
+              <a href="../blog.html" style="opacity: 0.7">Field notes</a>
+              &nbsp;/&nbsp;Scientific Computing
+            </span>
+          </div>
+          <h1 class="reveal" style="--reveal-delay: 0.08s">
+            Beyond CUDA — the future of heterogeneous GPU computing.
+          </h1>
+          <p class="lede reveal" style="--reveal-delay: 0.2s">
+            CUDA has been the lingua franca of GPU compute for fifteen
+            years. That's about to change — and code written today
+            should be ready.
+          </p>
+          <div class="post-meta reveal-sm" style="--reveal-delay: 0.3s">
+            <strong>The Neuralis Team</strong>
+            <span class="sep"></span>
+            <span>21 April 2026</span>
+            <span class="sep"></span>
+            <span>10 min read</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="article">
+        <div class="container">
+          <div class="prose">
+            <p>
+              For most of the last decade, "GPU compute" and "CUDA" were
+              synonymous in the literature, in the curriculum, and in
+              the recruiting funnel. That synonymy was always
+              technically wrong — but it was practically true. If you
+              wanted production-grade GPU performance, CUDA was the
+              path.
+            </p>
+            <p>
+              It's becoming less practically true every quarter. AMD's
+              MI300 series is shipping in real production deployments.
+              Intel's Ponte Vecchio successors are appearing in HPC
+              centers. Even more importantly, the abstraction layers
+              that let kernels move between vendors are finally
+              maturing.
+            </p>
+
+            <h2>The lock-in is real</h2>
+            <p>
+              CUDA's API is excellent. It's also proprietary to NVIDIA.
+              Every CUDA kernel you write is a deepening commitment to
+              NVIDIA hardware, NVIDIA pricing, NVIDIA driver
+              compatibility, and — increasingly relevant — NVIDIA
+              availability.
+            </p>
+            <p>
+              For most teams, this trade-off is fine. NVIDIA's hardware
+              is best-in-class for ML, scientific simulation, and HPC.
+              Their software stack is years ahead of the competition in
+              tooling, profiling, and library ecosystem.
+            </p>
+            <p>
+              The assumption that this will remain true forever is not
+              how serious infrastructure is built. We've watched at
+              least three production deployments scramble in the past
+              eighteen months because their CUDA-heavy stack collided
+              with allocation, cost, or compliance constraints that
+              made a vendor diversification mandatory.
+            </p>
+
+            <h2>The serious contenders</h2>
+            <p>
+              Three challengers worth taking seriously, each with a
+              distinct strategy.
+            </p>
+
+            <h3>SYCL (and DPC++)</h3>
+            <p>
+              C++ kernels that compile to multiple backends. Code once,
+              dispatch to NVIDIA, AMD, Intel, or even CPUs. Backed by
+              Intel and the Khronos Group. Mature for HPC. Growing —
+              fast — in ML.
+            </p>
+            <p>
+              SYCL is the closest thing to a vendor-neutral standard.
+              The single-source C++ model means you keep your kernel
+              code, your host code, and your build system all in one
+              place. Performance is competitive with native CUDA for
+              well-understood workloads.
+            </p>
+
+            <h3>ROCm + HIP</h3>
+            <p>
+              AMD's CUDA-equivalent stack. HIP is intentionally
+              source-level compatible with most of CUDA's runtime API,
+              which means existing CUDA kernels port with minimal
+              changes. ROCm is the underlying runtime and library suite.
+            </p>
+            <p>
+              Real progress in the last eighteen months. On AMD's MI300
+              accelerators, native HIP code is competitive with — and
+              sometimes exceeds — equivalent CUDA on NVIDIA hardware
+              for certain workloads. The library coverage (rocBLAS,
+              MIOpen, etc.) is closing the gap quickly.
+            </p>
+
+            <h3>oneAPI</h3>
+            <p>
+              Intel's umbrella over SYCL plus a comprehensive library
+              ecosystem: oneMKL for linear algebra, oneDNN for deep
+              learning, oneCCL for collective communication. The
+              cross-vendor story is stronger here than anywhere else,
+              because the libraries are designed from the start to
+              dispatch to multiple backends.
+            </p>
+
+            <h2>Writing kernels that travel</h2>
+            <p>
+              The discipline of writing portable GPU code is the same
+              discipline as writing portable systems code anywhere:
+              <em>code to what's standard, isolate what isn't</em>.
+            </p>
+            <ul>
+              <li>
+                <strong>Memory access patterns are universal.</strong>
+                Coalesced loads are coalesced everywhere. Bank-conflict
+                avoidance translates across vendors. These optimizations
+                pay off no matter the target.
+              </li>
+              <li>
+                <strong>Warp/wavefront sizes differ.</strong> NVIDIA
+                hardware uses 32, AMD's CDNA uses 64 (with newer
+                architectures supporting 32 as well). Hardcode less,
+                query more — <code>warpSize</code> or its equivalent
+                exists in every dialect.
+              </li>
+              <li>
+                <strong>Tensor and matrix unit instructions are
+                vendor-specific.</strong> Wrap them behind a unified
+                interface. We use a small abstraction layer that
+                dispatches to <code>mma</code> on NVIDIA, MFMA on AMD,
+                XMX on Intel.
+              </li>
+              <li>
+                <strong>Atomics, barriers, shuffles</strong> have direct
+                parallel implementations across vendors. Use
+                portability libraries — Kokkos, RAJA, OCCA — rather
+                than raw vendor intrinsics where you can.
+              </li>
+            </ul>
+
+            <h2>The performance trade-off</h2>
+            <p>
+              Portable kernels are, on average, slower than hand-tuned
+              vendor-specific kernels. The question isn't whether — the
+              question is by how much, and whether it's worth it.
+            </p>
+            <p>What we've measured across our own workloads:</p>
+            <ul>
+              <li>
+                On NVIDIA hardware, well-written SYCL is typically
+                <strong>5-15% slower</strong> than hand-tuned CUDA for
+                most workloads, with the gap closing every release.
+              </li>
+              <li>
+                On AMD MI300, native HIP is typically
+                <strong>5-10% faster</strong> than HIP-translated CUDA.
+                Native code on native hardware always wins by a small
+                margin.
+              </li>
+              <li>
+                Library-heavy workloads (BLAS, FFT, sparse) often see
+                <strong>no measurable gap</strong> — the vendor libraries
+                dominate the kernel-level differences.
+              </li>
+            </ul>
+            <p>
+              The question is whether single-digit-percent performance
+              is worth the lock-in cost. For training a foundation
+              model, the answer is often "yes, ship CUDA." For an HPC
+              pipeline that needs to run on three different
+              supercomputers, "no, ship SYCL."
+            </p>
+
+            <h2>What we're betting on</h2>
+            <p>
+              For new client engagements, our defaults look like this:
+            </p>
+            <ul>
+              <li>
+                <strong>Portability-first workloads.</strong> SYCL or
+                Kokkos, with vendor-specific paths for the 5% of kernels
+                that need them.
+              </li>
+              <li>
+                <strong>Absolute-performance workloads.</strong> CUDA on
+                NVIDIA, with the kernel abstraction designed so a future
+                HIP/SYCL port is cheap if needed.
+              </li>
+              <li>
+                <strong>Mixed-vendor deployments.</strong> oneAPI for
+                the library surface, SYCL for custom kernels, native
+                runtimes only where they buy something we can't get
+                otherwise.
+              </li>
+            </ul>
+            <p>
+              We tell clients honestly which one their workload calls
+              for. That conversation is usually more useful than the
+              technology choice itself.
+            </p>
+
+            <blockquote>
+              The interesting bet isn't on one ecosystem winning. It's
+              on the abstraction layers maturing fast enough that the
+              choice stops mattering.
+            </blockquote>
+
+            <p>
+              We think that's a three-to-five-year horizon. Workloads
+              architected today should be planning for the world where
+              vendor choice is a deployment-time decision, not a
+              compile-time one. That's a different mental model for a
+              lot of teams — and it's the one we're building toward.
+            </p>
+          </div>
+
+          <div class="article-foot">
+            <div class="tag-row">
+              <span class="tag">Scientific Computing</span>
+              <span class="tag">GPU</span>
+              <span class="tag">CUDA</span>
+              <span class="tag">SYCL</span>
+              <span class="tag">HPC</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <section class="related">
+      <div class="container">
+        <div class="related-head">
+          <span class="label reveal-sm"><span class="dot"></span>Keep reading</span>
+          <h2 class="reveal" style="--reveal-delay: 0.08s">More from the bench.</h2>
+        </div>
+        <div class="related-grid">
+          <a class="related-card reveal-card" href="llvm-for-compiler-engineering.html" style="--reveal-delay: 0s">
+            <span class="tag">Compiler Engineering</span>
+            <div class="title">Why we bet on LLVM for compiler engineering.</div>
+            <div class="meta">02 May 2026 · 8 min</div>
+          </a>
+          <a class="related-card reveal-card" href="building-multi-agent-systems.html" style="--reveal-delay: 0.08s">
+            <span class="tag">Agentic AI</span>
+            <div class="title">Building production-grade multi-agent systems.</div>
+            <div class="meta">14 May 2026 · 9 min</div>
+          </a>
+          <a class="related-card reveal-card" href="hidden-cost-of-rag.html" style="--reveal-delay: 0.16s">
+            <span class="tag">Agentic AI</span>
+            <div class="title">The hidden cost of RAG — lessons from production.</div>
+            <div class="meta">09 April 2026 · 8 min</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container footer-inner">
+        <div>© 2026 Neuralis</div>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://x.com" target="_blank" rel="noopener">X</a>
+          <a href="../index.html#contact">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var nav = document.getElementById("nav");
+        var hamburger = document.getElementById("hamburger");
+        var body = document.body;
+        var menuLinks = document.querySelectorAll("[data-close]");
+        function onScroll() {
+          if (window.scrollY > 60) nav.classList.add("scrolled");
+          else nav.classList.remove("scrolled");
+        }
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+        hamburger.addEventListener("click", function () {
+          body.classList.toggle("menu-open");
+        });
+        menuLinks.forEach(function (a) {
+          a.addEventListener("click", function () {
+            body.classList.remove("menu-open");
+          });
+        });
+        var revealEls = document.querySelectorAll(".reveal, .reveal-sm, .reveal-card");
+        if (!("IntersectionObserver" in window)) {
+          revealEls.forEach(function (el) { el.classList.add("is-visible"); });
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+        revealEls.forEach(function (el) { io.observe(el); });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Writing a compiler from scratch sounds romantic. In practice it's six months of redoing what LLVM solved in 2003."
+    />
+    <meta name="theme-color" content="#f9fafb" />
+    <meta property="og:title" content="Why we bet on LLVM for compiler engineering — Neuralis" />
+    <meta
+      property="og:description"
+      content="A field-tested case for the IR-first approach to custom toolchains, DSLs, and accelerator targets."
+    />
+    <meta property="og:type" content="article" />
+    <title>Why we bet on LLVM for compiler engineering — Neuralis</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fragment+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body>
+    <nav class="nav" id="nav">
+      <div class="container nav-inner">
+        <a href="../index.html" class="wordmark">Neuralis</a>
+        <div class="nav-links">
+          <a href="../index.html#work">Work</a>
+          <a href="../index.html#services">Services</a>
+          <a href="../index.html#process">Process</a>
+          <a href="../blog.html" class="is-current">Blog</a>
+          <a href="../index.html#contact">Contact</a>
+          <a href="../index.html#contact" class="nav-cta nav-cta-desktop">
+            Start a conversation
+          </a>
+        </div>
+        <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="../index.html#work" data-close>Work</a>
+      <a href="../index.html#services" data-close>Services</a>
+      <a href="../index.html#process" data-close>Process</a>
+      <a href="../blog.html" data-close>Blog</a>
+      <a href="../index.html#contact" data-close>Contact</a>
+      <a href="../index.html#contact" class="nav-cta" data-close>Start a conversation</a>
+    </div>
+
+    <article>
+      <header class="page-hero">
+        <div class="container container--narrow">
+          <div class="breadcrumb reveal-sm">
+            <span class="label">
+              <span class="dot"></span>
+              <a href="../blog.html" style="opacity: 0.7">Field notes</a>
+              &nbsp;/&nbsp;Compiler Engineering
+            </span>
+          </div>
+          <h1 class="reveal" style="--reveal-delay: 0.08s">
+            Why we bet on LLVM for compiler engineering.
+          </h1>
+          <p class="lede reveal" style="--reveal-delay: 0.2s">
+            Writing a compiler from scratch sounds romantic. In practice
+            it's six months of redoing what LLVM solved in 2003. Here's
+            the field-tested case for IR-first toolchains, DSLs, and
+            accelerator targets.
+          </p>
+          <div class="post-meta reveal-sm" style="--reveal-delay: 0.3s">
+            <strong>Pranav Chiku</strong>
+            <span class="sep"></span>
+            <span>02 May 2026</span>
+            <span class="sep"></span>
+            <span>8 min read</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="article">
+        <div class="container">
+          <div class="prose">
+            <p>
+              When a client asks for a custom compiler — for a new ISA, a
+              domain-specific language, a hardware accelerator — the
+              first question we ask is: <em>why aren't you using LLVM?</em>
+            </p>
+            <p>
+              The reflexive answers are familiar. "LLVM is too heavy."
+              "We want full control." "Our language is special." All of
+              them are reasonable in isolation. Almost none survive
+              eighteen months of production load.
+            </p>
+
+            <h2>The build-it-yourself trap</h2>
+            <p>
+              Writing a compiler from scratch sounds like a clean
+              engineering exercise. Lex, parse, type-check, lower,
+              optimize, codegen. Each stage is a well-defined pipeline.
+              Each is a research field.
+            </p>
+            <p>
+              The trap is that the parts you actually <em>care</em> about
+              — the domain semantics, the optimizations specific to your
+              workload, the calling convention to your accelerator — are
+              a small fraction of the work. The rest is undifferentiated
+              compiler plumbing that LLVM solved twenty years ago.
+            </p>
+            <p>
+              We've audited three from-scratch compilers. All three were
+              spending 80% of their engineering bandwidth re-implementing
+              well-understood algorithms: dominator trees, SSA
+              construction, register allocation, instruction scheduling.
+              None of that work was differentiating their product.
+            </p>
+
+            <h2>What LLVM actually gives you</h2>
+            <p>
+              LLVM is not <em>a</em> compiler. It's a tower of compilers,
+              presented as a library. Most of its value is the contract
+              the IR represents — a target-independent, SSA-form
+              representation that lets you plug your work in at exactly
+              the level it belongs.
+            </p>
+            <ul>
+              <li>
+                <strong>The IR is the contract.</strong> If you can lower
+                your DSL to LLVM IR, you inherit every optimization pass
+                — inlining, dead code elimination, vectorization, loop
+                unrolling, alias analysis — for free.
+              </li>
+              <li>
+                <strong>The backends ship target code.</strong> 30+
+                supported targets, with everything from x86-64 to RISC-V
+                to GPU IRs. New hardware? You write a backend, not a
+                compiler.
+              </li>
+              <li>
+                <strong>The pass infrastructure composes.</strong>
+                Custom passes layer into the standard pipeline. Your
+                domain-specific peephole patterns, alias analyses, and
+                vectorization hints run alongside the standard ones.
+              </li>
+            </ul>
+            <p>
+              This is the leverage. You write the parts that are unique
+              to your domain. LLVM does the rest.
+            </p>
+
+            <h2>Frontend, IR, or backend — pick your fight</h2>
+            <p>
+              "Use LLVM" isn't one decision. It's three, and they live at
+              different layers of the stack. Knowing which layer your
+              problem belongs at saves months.
+            </p>
+
+            <h3>If you're building a new language</h3>
+            <p>
+              You need a <strong>frontend</strong>. Parse to AST,
+              type-check, lower to LLVM IR. Reuse the optimization
+              pipeline and the backends entirely.
+            </p>
+            <p>
+              The frontend is where domain semantics live. It's also
+              where most compiler bugs come from. Spend your engineering
+              budget here.
+            </p>
+
+            <h3>If you're targeting new hardware</h3>
+            <p>
+              You need a <strong>backend</strong>. Define your target's
+              instruction set, register file, calling convention, ABI.
+              Inherit the language ecosystem — every LLVM-targeting
+              compiler can now produce code for your hardware.
+            </p>
+            <p>
+              Backends are intricate. The TableGen DSL has a learning
+              curve. Plan for that. But the payoff — every existing
+              language compiling to your accelerator — is enormous.
+            </p>
+
+            <h3>If you're extracting performance</h3>
+            <p>
+              You need <strong>custom passes</strong>. Profile-guided.
+              Domain-specific. Layered into the existing pipeline.
+            </p>
+            <p>
+              We've shipped custom passes that delivered 4-10x speedups
+              on specific workloads — typically by encoding domain
+              invariants (alignment, alias freedom, value ranges) that
+              the generic LLVM passes can't infer.
+            </p>
+
+            <h2>Pitfalls you should know about</h2>
+            <p>
+              LLVM is mature, but it's not without sharp edges. The
+              things that bite us most often:
+            </p>
+            <ul>
+              <li>
+                <strong>The IR is verbose.</strong> Lowering to it
+                cleanly takes more taste than the documentation suggests.
+                Bad IR layout will defeat optimization passes that look
+                fine in isolation.
+              </li>
+              <li>
+                <strong>Passes assume IR invariants.</strong> Break
+                them — for example, by emitting unreachable code with
+                live values, or by failing to insert
+                <code>llvm.assume</code> intrinsics — and you'll get
+                crashes deep in optimization with stack traces that look
+                nothing like your code.
+              </li>
+              <li>
+                <strong>Pass ordering matters.</strong> Performance comes
+                from the right sequence, not adding more. The default
+                pipeline (<code>-O3</code>) is the product of years of
+                tuning. Custom pipelines need empirical validation.
+              </li>
+              <li>
+                <strong>Debugging is its own skill.</strong> Master
+                <code>-print-after-all</code>,
+                <code>opt-bisect-limit</code>, and the various dump
+                modes. Without them, debugging an optimization pass is
+                close to impossible.
+              </li>
+            </ul>
+
+            <h2>When LLVM is the wrong tool</h2>
+            <p>
+              Sometimes the answer is genuinely not LLVM. A few cases
+              where we've recommended against it:
+            </p>
+            <ul>
+              <li>
+                <strong>Your DSL is small.</strong> SQL fragments,
+                templating mini-languages, query filters. Embed them
+                into a host language. Don't compile.
+              </li>
+              <li>
+                <strong>Your target is purely interpreted.</strong>
+                Lua-style scripting, configuration languages, simple
+                rule engines. A tree-walking or bytecode interpreter is
+                faster to build and easier to debug.
+              </li>
+              <li>
+                <strong>You need source-level transformations.</strong>
+                Refactoring tools, linters, codemods. Look at
+                Tree-sitter, libCST, Roslyn, or LSIF tooling. LLVM
+                operates below the source level — it's the wrong layer.
+              </li>
+              <li>
+                <strong>You want to ship in a browser.</strong> LLVM
+                bundles are heavy. WASM-targeting tools that don't drag
+                in the full pipeline (Cranelift, Wasmtime) are usually
+                a better fit.
+              </li>
+            </ul>
+
+            <h2>The wager, summarized</h2>
+            <blockquote>
+              LLVM is right when you need performance, target
+              portability, or sophisticated optimization. Outside that
+              triangle, simpler tools win.
+            </blockquote>
+            <p>
+              The bet we make at Neuralis is that for production
+              compiler work — the kind that has to outlive the team that
+              wrote it, run on hardware that doesn't exist yet, or
+              extract single-digit-percent improvements at scale — LLVM
+              is almost always the right substrate.
+            </p>
+            <p>
+              What we own is the IR-level reasoning, the domain-specific
+              passes, the lowering strategy. What LLVM owns is everything
+              that's been solved. That division of labor is the entire
+              point.
+            </p>
+          </div>
+
+          <div class="article-foot">
+            <div class="tag-row">
+              <span class="tag">Compiler Engineering</span>
+              <span class="tag">LLVM</span>
+              <span class="tag">DSL</span>
+              <span class="tag">Toolchains</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <section class="related">
+      <div class="container">
+        <div class="related-head">
+          <span class="label reveal-sm"><span class="dot"></span>Keep reading</span>
+          <h2 class="reveal" style="--reveal-delay: 0.08s">More from the bench.</h2>
+        </div>
+        <div class="related-grid">
+          <a class="related-card reveal-card" href="beyond-cuda-heterogeneous-gpu.html" style="--reveal-delay: 0s">
+            <span class="tag">Scientific Computing</span>
+            <div class="title">Beyond CUDA — the future of heterogeneous GPU computing.</div>
+            <div class="meta">21 April 2026 · 10 min</div>
+          </a>
+          <a class="related-card reveal-card" href="building-multi-agent-systems.html" style="--reveal-delay: 0.08s">
+            <span class="tag">Agentic AI</span>
+            <div class="title">Building production-grade multi-agent systems.</div>
+            <div class="meta">14 May 2026 · 9 min</div>
+          </a>
+          <a class="related-card reveal-card" href="hidden-cost-of-rag.html" style="--reveal-delay: 0.16s">
+            <span class="tag">Agentic AI</span>
+            <div class="title">The hidden cost of RAG — lessons from production.</div>
+            <div class="meta">09 April 2026 · 8 min</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container footer-inner">
+        <div>© 2026 Neuralis</div>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://x.com" target="_blank" rel="noopener">X</a>
+          <a href="../index.html#contact">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var nav = document.getElementById("nav");
+        var hamburger = document.getElementById("hamburger");
+        var body = document.body;
+        var menuLinks = document.querySelectorAll("[data-close]");
+        function onScroll() {
+          if (window.scrollY > 60) nav.classList.add("scrolled");
+          else nav.classList.remove("scrolled");
+        }
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+        hamburger.addEventListener("click", function () {
+          body.classList.toggle("menu-open");
+        });
+        menuLinks.forEach(function (a) {
+          a.addEventListener("click", function () {
+            body.classList.remove("menu-open");
+          });
+        });
+        var revealEls = document.querySelectorAll(".reveal, .reveal-sm, .reveal-card");
+        if (!("IntersectionObserver" in window)) {
+          revealEls.forEach(function (el) { el.classList.add("is-visible"); });
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+        revealEls.forEach(function (el) { io.observe(el); });
+      })();
+    </script>
+  </body>
+</html>

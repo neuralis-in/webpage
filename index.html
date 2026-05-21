@@ -2,30 +2,1912 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Neuralis — Scientific computing, compiler engineering, and agentic AI consulting."
+      content="Neuralis is a consulting studio that builds compilers, high-performance compute pipelines, and autonomous AI agents for teams that need production-grade precision."
     />
     <meta
       name="keywords"
-      content="Neuralis, agentic AI, scientific computing, compilers, AI consulting, HPC"
+      content="Neuralis, agentic AI, scientific computing, compiler engineering, HPC, LLVM, consulting"
     />
     <meta name="author" content="Neuralis" />
-    <meta name="theme-color" content="#000000" />
-    <title>Neuralis</title>
+    <meta name="theme-color" content="#f9fafb" />
+    <meta property="og:title" content="Neuralis — Precision engineering for hard problems" />
+    <meta
+      property="og:description"
+      content="Compilers, high-performance compute pipelines, and autonomous AI agents for teams that need production-grade precision."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://neuralis.in" />
+    <title>Neuralis — Precision engineering for hard problems</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fragment+Mono&display=swap"
       rel="stylesheet"
     />
+    <script>
+      // Flag JS-enabled before paint so reveal elements can hide cleanly (no FOUC).
+      document.documentElement.classList.add("js");
+    </script>
+
+    <style>
+      /* =========================================================
+         Tokens — pulled directly from newgenre.studio's token table
+         ========================================================= */
+      :root {
+        --bg: #f9fafb;            /* primary background (their canonical bg token) */
+        --bg-warm: #f7f3f0;       /* warmer cream used in transitions */
+        --bg-card: #ffffff;       /* card / surface */
+        --text: #0c1018;          /* primary text */
+        --text-2: rgba(12, 16, 24, 0.62);
+        --text-3: rgba(12, 16, 24, 0.42);
+        --text-inverse: #f7f3f0;  /* light on dark sections */
+        --border: rgba(12, 16, 24, 0.08);
+        --border-strong: rgba(12, 16, 24, 0.18);
+
+        /* Cosmos palette */
+        --cosmos-1: #280e01;
+        --cosmos-2: #182644;
+        --cosmos-3: #5a769f;
+        --cosmos-4: #87a1c4;
+        --cosmos-5: #c1d3e6;
+        --cosmos-6: #fef9e1;
+        --cosmos-7: #f7f3f0;
+
+        /* Sunset palette */
+        --sun-1: #1e1310;
+        --sun-2: #542512;
+        --sun-3: #903c27;
+        --sun-4: #e46c44;   /* signature rust */
+        --sun-5: #ed9454;
+        --sun-6: #f1bd7a;
+        --sun-7: #fcbe6d;
+        --sun-8: #fef9e1;
+
+        /* Accents */
+        --accent: #e46c44;  /* used sparingly for hover / focus */
+
+        --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        --mono: "Fragment Mono", ui-monospace, SFMono-Regular, Menlo,
+          Consolas, monospace;
+      }
+
+      /* =========================================================
+         Reset
+         ========================================================= */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--sans);
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.45;
+        letter-spacing: -0.01em;
+        overflow-x: hidden;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      button {
+        font: inherit;
+        letter-spacing: inherit;
+        border: 0;
+        cursor: pointer;
+        background: none;
+        color: inherit;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+      ::selection {
+        background: var(--text);
+        color: var(--bg);
+      }
+
+      /* =========================================================
+         Scroll reveal — global fade-up animation
+         Engaged only when JS is present (.js on <html>)
+         ========================================================= */
+      .js .reveal {
+        opacity: 0;
+        transform: translateY(36px);
+        transition:
+          opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        transition-delay: var(--reveal-delay, 0s);
+        will-change: opacity, transform;
+      }
+      .js .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Subtler variant for inline / label elements */
+      .js .reveal-sm {
+        opacity: 0;
+        transform: translateY(14px);
+        transition:
+          opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        transition-delay: var(--reveal-delay, 0s);
+        will-change: opacity, transform;
+      }
+      .js .reveal-sm.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Card / scale variant: subtle scale + fade for surface elements */
+      .js .reveal-card {
+        opacity: 0;
+        transform: translateY(40px) scale(0.985);
+        transition:
+          opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        transition-delay: var(--reveal-delay, 0s);
+        will-change: opacity, transform;
+      }
+      .js .reveal-card.is-visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      /* Honour user preference */
+      @media (prefers-reduced-motion: reduce) {
+        .js .reveal,
+        .js .reveal-sm,
+        .js .reveal-card {
+          opacity: 1 !important;
+          transform: none !important;
+          transition: none !important;
+        }
+      }
+
+      /* =========================================================
+         Layout
+         ========================================================= */
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 48px;
+      }
+      section {
+        scroll-margin-top: 80px;
+        position: relative;
+      }
+      .section-divider {
+        border-top: 1px solid var(--border);
+      }
+      .section-inner {
+        padding: 140px 0;
+      }
+      .section-head {
+        max-width: 900px;
+        margin-bottom: 64px;
+      }
+      .section-label {
+        margin-bottom: 28px;
+      }
+      .section-title {
+        font-family: var(--sans);
+        font-size: clamp(36px, 5vw, 64px);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.02;
+        margin: 0;
+        color: var(--text);
+      }
+      .section-title .muted {
+        color: var(--text-3);
+      }
+      .section-lede {
+        margin-top: 28px;
+        color: var(--text-2);
+        font-size: 18px;
+        line-height: 1.5;
+        max-width: 640px;
+        letter-spacing: -0.005em;
+      }
+
+      /* =========================================================
+         Mono label (small caps with dot)
+         ========================================================= */
+      .label {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--mono);
+        font-size: 12px;
+        font-weight: 400;
+        color: var(--text);
+        line-height: 1;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+      .label .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: var(--accent);
+        display: inline-block;
+      }
+      .label--inverse {
+        color: var(--text-inverse);
+      }
+      .label--inverse .dot {
+        background: var(--sun-7);
+      }
+
+      /* =========================================================
+         Buttons
+         ========================================================= */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--sans);
+        font-weight: 500;
+        letter-spacing: -0.005em;
+        line-height: 1;
+        border-radius: 999px;
+        transition: background 0.2s ease, color 0.2s ease,
+          border-color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+        cursor: pointer;
+      }
+      .btn-primary {
+        background: var(--text);
+        color: var(--bg);
+        padding: 14px 22px;
+        font-size: 14px;
+      }
+      .btn-primary:hover {
+        background: #000;
+      }
+      .btn-primary.lg {
+        padding: 18px 30px;
+        font-size: 16px;
+      }
+      .btn-inverse {
+        background: var(--text-inverse);
+        color: var(--text);
+        padding: 18px 30px;
+        font-size: 16px;
+      }
+      .btn-inverse:hover {
+        background: #fff;
+      }
+      .btn .arrow {
+        display: inline-block;
+        transition: transform 0.2s ease;
+      }
+      .btn:hover .arrow {
+        transform: translateX(3px);
+      }
+      .btn-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text);
+        line-height: 1;
+        padding: 14px 0;
+        transition: color 0.2s ease;
+      }
+      .btn-link .arrow {
+        display: inline-block;
+        transition: transform 0.2s ease;
+      }
+      .btn-link:hover {
+        color: var(--accent);
+      }
+      .btn-link:hover .arrow {
+        transform: translateX(3px);
+      }
+
+      /* =========================================================
+         Nav — adaptive: transparent over cosmos hero, light when scrolled
+         ========================================================= */
+      .nav {
+        position: fixed;
+        inset: 0 0 auto 0;
+        z-index: 50;
+        background: transparent;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.25s ease, background 0.25s ease,
+          backdrop-filter 0.25s ease;
+      }
+      .nav.scrolled {
+        background: rgba(249, 250, 251, 0.82);
+        backdrop-filter: blur(14px) saturate(140%);
+        -webkit-backdrop-filter: blur(14px) saturate(140%);
+        border-bottom-color: var(--border);
+      }
+      .nav-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 72px;
+      }
+      .wordmark {
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        color: var(--text-inverse);
+        transition: color 0.25s ease;
+      }
+      .nav.scrolled .wordmark {
+        color: var(--text);
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+      }
+      .nav-links a:not(.nav-cta) {
+        font-size: 14px;
+        font-weight: 500;
+        color: rgba(247, 243, 240, 0.75);
+        letter-spacing: -0.005em;
+        transition: color 0.25s ease;
+      }
+      .nav-links a:not(.nav-cta):hover {
+        color: var(--text-inverse);
+      }
+      .nav.scrolled .nav-links a:not(.nav-cta) {
+        color: var(--text-2);
+      }
+      .nav.scrolled .nav-links a:not(.nav-cta):hover {
+        color: var(--text);
+      }
+      a.nav-cta,
+      .nav-links a.nav-cta {
+        padding: 11px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        background: var(--text-inverse);
+        color: var(--text);
+        border-radius: 999px;
+        letter-spacing: -0.005em;
+        transition: background 0.25s ease, color 0.25s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .nav.scrolled a.nav-cta,
+      .nav.scrolled .nav-links a.nav-cta {
+        background: var(--text);
+        color: var(--bg);
+      }
+      a.nav-cta:hover,
+      .nav-links a.nav-cta:hover {
+        background: var(--accent);
+        color: var(--text-inverse);
+      }
+      .nav.scrolled a.nav-cta:hover,
+      .nav.scrolled .nav-links a.nav-cta:hover {
+        background: var(--accent);
+        color: var(--bg);
+      }
+
+      .nav-hamburger {
+        display: none;
+        width: 40px;
+        height: 40px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+      }
+      .nav-hamburger span {
+        position: relative;
+        display: block;
+        width: 18px;
+        height: 1.5px;
+        background: var(--text-inverse);
+        transition: background 0.25s ease;
+      }
+      .nav.scrolled .nav-hamburger span,
+      .nav.scrolled .nav-hamburger span::before,
+      .nav.scrolled .nav-hamburger span::after {
+        background: var(--text);
+      }
+      .nav-hamburger span::before,
+      .nav-hamburger span::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 18px;
+        height: 1.5px;
+        background: var(--text-inverse);
+        transition: transform 0.2s ease, top 0.2s ease, opacity 0.2s ease,
+          background 0.25s ease;
+      }
+      .nav-hamburger span::before {
+        top: -6px;
+      }
+      .nav-hamburger span::after {
+        top: 6px;
+      }
+      body.menu-open .nav-hamburger span {
+        background: transparent;
+      }
+      body.menu-open .nav-hamburger span::before {
+        top: 0;
+        transform: rotate(45deg);
+      }
+      body.menu-open .nav-hamburger span::after {
+        top: 0;
+        transform: rotate(-45deg);
+      }
+
+      .mobile-menu {
+        position: fixed;
+        inset: 0;
+        background: var(--bg);
+        z-index: 40;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 28px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+      }
+      .mobile-menu a {
+        font-size: 32px;
+        font-weight: 800;
+        color: var(--text);
+        letter-spacing: -0.03em;
+      }
+      .mobile-menu .nav-cta {
+        margin-top: 12px;
+        font-size: 16px;
+        padding: 14px 24px;
+      }
+      body.menu-open {
+        overflow: hidden;
+      }
+      body.menu-open .mobile-menu {
+        display: flex;
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* =========================================================
+         Hero — newgenre's signature cosmos gradient + sun glow
+         ========================================================= */
+      .hero {
+        position: relative;
+        overflow: hidden;
+        color: var(--text-inverse);
+        background: linear-gradient(
+          180deg,
+          #280e01 0%,
+          #182644 18%,
+          #2c3f5e 35%,
+          #5a769f 52%,
+          #87a1c4 68%,
+          #c1d3e6 82%,
+          #fef9e1 94%,
+          #f7f3f0 100%
+        );
+      }
+      .hero::after {
+        /* Warm sun rising at the horizon (lower portion) */
+        content: "";
+        position: absolute;
+        inset: auto 0 -10% 0;
+        height: 55%;
+        pointer-events: none;
+        background: radial-gradient(
+          90% 70% at 50% 95%,
+          rgba(255, 230, 0, 0.45) 0%,
+          rgba(252, 190, 109, 0.32) 22%,
+          rgba(237, 148, 84, 0.18) 42%,
+          rgba(228, 108, 68, 0.06) 62%,
+          rgba(0, 0, 0, 0) 90%
+        );
+        mix-blend-mode: screen;
+        z-index: 0;
+      }
+      .hero-inner {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 160px 0 140px;
+        max-width: 1180px;
+      }
+      .hero .label {
+        color: var(--text-inverse);
+      }
+      .hero .label .dot {
+        background: var(--sun-7);
+      }
+      .hero h1 {
+        font-family: var(--sans);
+        font-size: clamp(52px, 8.6vw, 124px);
+        font-weight: 900;
+        letter-spacing: -0.04em;
+        line-height: 0.95;
+        margin: 32px 0 0;
+        color: var(--text-inverse);
+      }
+      .hero h1 .muted {
+        color: rgba(247, 243, 240, 0.5);
+        display: block;
+      }
+      .hero-body {
+        margin-top: 40px;
+        font-size: 19px;
+        line-height: 1.45;
+        color: rgba(247, 243, 240, 0.82);
+        max-width: 640px;
+        letter-spacing: -0.005em;
+      }
+      .hero-ctas {
+        margin-top: 48px;
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        flex-wrap: wrap;
+      }
+      .hero-ctas .btn-primary {
+        background: var(--text-inverse);
+        color: var(--text);
+      }
+      .hero-ctas .btn-primary:hover {
+        background: #ffffff;
+      }
+      .hero-ctas .btn-link {
+        color: var(--text-inverse);
+      }
+      .hero-ctas .btn-link:hover {
+        color: var(--sun-7);
+      }
+
+      /* =========================================================
+         Marquee — newgenre's scroll-animated tagline band
+         ========================================================= */
+      .marquee {
+        position: relative;
+        background: var(--bg-warm);
+        border-bottom: 1px solid var(--border);
+        padding: 28px 0;
+        overflow: hidden;
+        mask-image: linear-gradient(
+          90deg,
+          transparent 0%,
+          #000 8%,
+          #000 92%,
+          transparent 100%
+        );
+        -webkit-mask-image: linear-gradient(
+          90deg,
+          transparent 0%,
+          #000 8%,
+          #000 92%,
+          transparent 100%
+        );
+      }
+      .marquee-track {
+        display: flex;
+        align-items: center;
+        gap: 56px;
+        width: max-content;
+        animation: marquee 38s linear infinite;
+        will-change: transform;
+      }
+      .marquee:hover .marquee-track {
+        animation-play-state: paused;
+      }
+      .marquee-item {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 56px;
+        font-family: var(--sans);
+        font-size: clamp(28px, 4.4vw, 56px);
+        font-weight: 800;
+        letter-spacing: -0.035em;
+        line-height: 1;
+        color: var(--text);
+        text-transform: none;
+      }
+      .marquee-sep {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--accent);
+        flex-shrink: 0;
+      }
+      @keyframes marquee {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .marquee-track {
+          animation: none;
+        }
+      }
+
+      /* =========================================================
+         Card — newgenre-style hover with lift, glow, accent border
+         ========================================================= */
+      .card {
+        position: relative;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 40px;
+        overflow: hidden;
+        isolation: isolate;
+        transition:
+          border-color 0.4s ease,
+          transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+          box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+          background 0.4s ease;
+      }
+      .card::after {
+        /* Warm radial that warms the card on hover */
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            70% 80% at 100% 0%,
+            rgba(228, 108, 68, 0.10) 0%,
+            rgba(252, 190, 109, 0.05) 35%,
+            transparent 70%
+          );
+        opacity: 0;
+        transition: opacity 0.45s ease;
+        pointer-events: none;
+        z-index: -1;
+      }
+      .card:hover {
+        border-color: rgba(228, 108, 68, 0.42);
+        transform: translateY(-6px);
+        box-shadow:
+          0 30px 60px -28px rgba(12, 16, 24, 0.18),
+          0 10px 24px -16px rgba(228, 108, 68, 0.12);
+      }
+      .card:hover::after {
+        opacity: 1;
+      }
+
+      /* Corner arrow indicator (offering / phase cards) */
+      .offering-card::before,
+      .phase-card::before {
+        content: "↗";
+        position: absolute;
+        top: 28px;
+        right: 32px;
+        font-size: 22px;
+        font-weight: 400;
+        color: var(--text-3);
+        opacity: 0;
+        transform: translate(-8px, 8px) rotate(-15deg);
+        transition:
+          opacity 0.35s ease,
+          transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+          color 0.3s ease;
+        pointer-events: none;
+        line-height: 1;
+      }
+      .offering-card:hover::before,
+      .phase-card:hover::before {
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg);
+        color: var(--accent);
+      }
+      .offering-card:hover .offering-title,
+      .phase-card:hover .phase-title {
+        color: var(--accent);
+        transition: color 0.3s ease;
+      }
+
+      /* =========================================================
+         Trusted by — warm cream wash
+         ========================================================= */
+      .trusted {
+        background:
+          radial-gradient(
+            70% 55% at 100% 0%,
+            rgba(252, 190, 109, 0.14) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            60% 50% at 0% 100%,
+            rgba(228, 108, 68, 0.08) 0%,
+            transparent 65%
+          ),
+          #faf4ea;
+      }
+      .clients-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      .client-card {
+        padding: 44px;
+      }
+      .client-card .client-logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 16px;
+        padding-bottom: 28px;
+        margin-bottom: 28px;
+        border-bottom: 1px solid var(--border);
+        transition: border-color 0.4s ease;
+      }
+      .client-card:hover .client-logo {
+        border-bottom-color: rgba(228, 108, 68, 0.32);
+      }
+      .client-card .logo-mark {
+        flex-shrink: 0;
+        display: block;
+        height: 40px;
+        width: auto;
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .client-card:hover .logo-mark {
+        transform: rotate(-6deg) scale(1.04);
+      }
+      .client-card .logo-wordmark {
+        flex-shrink: 0;
+        display: block;
+        height: 28px;
+        width: auto;
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .client-card:hover .logo-wordmark {
+        transform: translateX(4px);
+      }
+      .client-card .logo-text {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        color: var(--text);
+        line-height: 1;
+      }
+      .client-card .client-body {
+        margin: 0;
+        color: var(--text-2);
+        font-size: 16px;
+        line-height: 1.55;
+        letter-spacing: -0.005em;
+      }
+      .client-card .client-quote {
+        margin: 32px 0 0;
+        padding-top: 28px;
+        border-top: 1px solid var(--border);
+        font-style: italic;
+        color: var(--text-2);
+        font-size: 17px;
+        line-height: 1.45;
+        letter-spacing: -0.005em;
+      }
+      .client-card .client-attr {
+        margin-top: 16px;
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-3);
+        text-transform: uppercase;
+        letter-spacing: 0;
+      }
+
+      /* =========================================================
+         Offerings — pale yellow / ice wash
+         ========================================================= */
+      .offerings {
+        border-top: 1px solid var(--border);
+        background:
+          radial-gradient(
+            70% 60% at 0% 0%,
+            rgba(195, 211, 230, 0.42) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            55% 55% at 100% 100%,
+            rgba(255, 230, 0, 0.14) 0%,
+            transparent 65%
+          ),
+          #f7f1de;
+      }
+      .offerings-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .offering-card .offering-num {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-3);
+        text-transform: uppercase;
+      }
+      .offering-card .offering-title {
+        margin-top: 72px;
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: -0.025em;
+        line-height: 1.08;
+      }
+      .offering-card .offering-body {
+        margin-top: 14px;
+        color: var(--text-2);
+        font-size: 16px;
+        line-height: 1.5;
+        letter-spacing: -0.005em;
+      }
+
+      /* =========================================================
+         Service deep dive — warm cream
+         ========================================================= */
+      .services-wrap {
+        border-top: 1px solid var(--border);
+        background:
+          radial-gradient(
+            80% 50% at 100% 0%,
+            rgba(228, 108, 68, 0.06) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            60% 40% at 0% 100%,
+            rgba(252, 190, 109, 0.08) 0%,
+            transparent 65%
+          ),
+          #f4eee3;
+      }
+      .service {
+        padding: 112px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .service:last-child {
+        border-bottom: none;
+      }
+      .service-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 96px;
+        align-items: start;
+      }
+      .service-head {
+        position: sticky;
+        top: 112px;
+        align-self: start;
+      }
+      .service-head .service-meta {
+        margin: 24px 0 32px;
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-3);
+        text-transform: uppercase;
+      }
+      .service-head h3 {
+        font-family: var(--sans);
+        font-size: clamp(36px, 4.6vw, 60px);
+        font-weight: 800;
+        letter-spacing: -0.035em;
+        line-height: 0.98;
+        margin: 0;
+        color: var(--text);
+      }
+      .service-head .service-body {
+        margin-top: 28px;
+        color: var(--text-2);
+        font-size: 18px;
+        line-height: 1.5;
+        max-width: 520px;
+        letter-spacing: -0.005em;
+      }
+      .capability-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border-top: 1px solid var(--border);
+      }
+      .capability-list li {
+        position: relative;
+        isolation: isolate;
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        align-items: baseline;
+        gap: 16px;
+        padding: 22px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 18px;
+        color: var(--text);
+        line-height: 1.4;
+        letter-spacing: -0.01em;
+        transition: color 0.3s ease, padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .capability-list li::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          rgba(228, 108, 68, 0.06) 0%,
+          transparent 60%
+        );
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        pointer-events: none;
+        z-index: -1;
+      }
+      .capability-list li:hover {
+        color: var(--accent);
+        padding-left: 10px;
+      }
+      .capability-list li:hover::before {
+        opacity: 1;
+      }
+      .capability-list li:hover .cap-num {
+        color: var(--accent);
+      }
+      .capability-list li .cap-num {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-3);
+        text-transform: uppercase;
+        line-height: 1;
+      }
+
+      /* =========================================================
+         Engagement model — cool slate wash
+         ========================================================= */
+      .process {
+        border-top: 1px solid var(--border);
+        background:
+          radial-gradient(
+            70% 55% at 0% 0%,
+            rgba(135, 161, 196, 0.24) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            55% 45% at 100% 100%,
+            rgba(195, 211, 230, 0.22) 0%,
+            transparent 65%
+          ),
+          #ebf0f6;
+      }
+      .phases-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .phase-card .phase-label {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-3);
+        text-transform: uppercase;
+      }
+      .phase-card .phase-title {
+        margin-top: 96px;
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: -0.025em;
+        line-height: 1.08;
+      }
+      .phase-card .phase-body {
+        margin-top: 14px;
+        font-size: 16px;
+        line-height: 1.5;
+        color: var(--text-2);
+        letter-spacing: -0.005em;
+      }
+
+      /* =========================================================
+         What sets us apart — warm yellow cream
+         ========================================================= */
+      .diff {
+        border-top: 1px solid var(--border);
+        background:
+          radial-gradient(
+            60% 50% at 100% 0%,
+            rgba(255, 230, 0, 0.12) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            60% 50% at 0% 100%,
+            rgba(228, 108, 68, 0.06) 0%,
+            transparent 65%
+          ),
+          #f9f3da;
+      }
+      .diff-rows {
+        display: flex;
+        flex-direction: column;
+      }
+      .diff-row {
+        position: relative;
+        isolation: isolate;
+        display: grid;
+        grid-template-columns: 96px 1fr;
+        gap: 32px;
+        align-items: baseline;
+        padding: 44px 24px;
+        margin: 0 -24px;
+        border-top: 1px solid var(--border);
+        transition: padding 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .diff-row::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          rgba(228, 108, 68, 0.07) 0%,
+          rgba(252, 190, 109, 0.04) 40%,
+          transparent 70%
+        );
+        opacity: 0;
+        transition: opacity 0.45s ease;
+        pointer-events: none;
+        z-index: -1;
+      }
+      .diff-row:last-child {
+        border-bottom: 1px solid var(--border);
+      }
+      .diff-row:hover {
+        padding-left: 40px;
+      }
+      .diff-row:hover::before {
+        opacity: 1;
+      }
+      .diff-row:hover .diff-title,
+      .diff-row:hover .diff-num {
+        color: var(--accent);
+      }
+      .diff-row .diff-num,
+      .diff-row .diff-title {
+        transition: color 0.3s ease;
+      }
+      .diff-row .diff-num {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-3);
+        text-transform: uppercase;
+      }
+      .diff-row .diff-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: -0.03em;
+        line-height: 1.08;
+        transition: color 0.2s ease;
+      }
+      .diff-row .diff-body {
+        margin-top: 16px;
+        color: var(--text-2);
+        font-size: 18px;
+        line-height: 1.5;
+        max-width: 760px;
+        letter-spacing: -0.005em;
+      }
+
+      /* =========================================================
+         CTA — newgenre sunset gradient
+         ========================================================= */
+      .cta {
+        position: relative;
+        color: var(--text-inverse);
+        background: linear-gradient(
+          180deg,
+          var(--sun-1) 0%,
+          var(--sun-2) 22%,
+          var(--sun-3) 46%,
+          var(--sun-4) 70%,
+          var(--sun-5) 88%,
+          var(--sun-6) 100%
+        );
+        overflow: hidden;
+      }
+      .cta::after {
+        /* Warm glow on the bottom */
+        content: "";
+        position: absolute;
+        inset: 60% 0 -20% 0;
+        background: radial-gradient(
+          80% 65% at 50% 100%,
+          rgba(255, 230, 0, 0.45) 0%,
+          rgba(252, 190, 109, 0.25) 30%,
+          rgba(228, 108, 68, 0) 70%
+        );
+        pointer-events: none;
+      }
+      .cta-inner {
+        position: relative;
+        z-index: 1;
+        padding: 180px 0 160px;
+      }
+      .cta .label {
+        color: var(--text-inverse);
+      }
+      .cta .label .dot {
+        background: var(--sun-7);
+      }
+      .cta h2 {
+        font-family: var(--sans);
+        font-size: clamp(56px, 8vw, 124px);
+        font-weight: 900;
+        letter-spacing: -0.04em;
+        line-height: 0.95;
+        margin: 32px 0 0;
+        color: var(--text-inverse);
+        max-width: 1180px;
+      }
+      .cta h2 .muted {
+        color: rgba(247, 243, 240, 0.55);
+        display: block;
+      }
+      .cta-sub {
+        margin: 40px 0 0;
+        max-width: 580px;
+        color: rgba(247, 243, 240, 0.82);
+        font-size: 19px;
+        line-height: 1.5;
+        letter-spacing: -0.005em;
+      }
+      .cta-row {
+        margin-top: 48px;
+        display: flex;
+        align-items: center;
+        gap: 32px;
+        flex-wrap: wrap;
+      }
+      .cta-row .phone {
+        font-family: var(--mono);
+        font-size: 14px;
+        color: var(--text-inverse);
+        text-transform: uppercase;
+        transition: opacity 0.2s ease;
+      }
+      .cta-row .phone:hover {
+        opacity: 0.65;
+      }
+      .cta-meta {
+        margin-top: 36px;
+        font-family: var(--mono);
+        color: rgba(247, 243, 240, 0.55);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+      .cta-meta a {
+        color: rgba(247, 243, 240, 0.78);
+        transition: color 0.2s ease;
+      }
+      .cta-meta a:hover {
+        color: var(--text-inverse);
+      }
+
+      /* =========================================================
+         Footer (sits on cream below the gradient)
+         ========================================================= */
+      footer {
+        background: var(--bg);
+        border-top: 1px solid var(--border);
+      }
+      .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 36px 0;
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-3);
+        text-transform: uppercase;
+      }
+      .footer-links {
+        display: flex;
+        gap: 28px;
+      }
+      .footer-links a {
+        color: var(--text-2);
+        transition: color 0.2s ease;
+      }
+      .footer-links a:hover {
+        color: var(--accent);
+      }
+
+      /* =========================================================
+         Responsive
+         ========================================================= */
+      @media (max-width: 1024px) {
+        .service-grid {
+          gap: 64px;
+        }
+      }
+
+      @media (max-width: 960px) {
+        .service-grid {
+          grid-template-columns: 1fr;
+          gap: 48px;
+        }
+        .service-head {
+          position: static;
+        }
+        .offerings-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 0 24px;
+        }
+        .section-inner {
+          padding: 88px 0;
+        }
+        .hero-inner {
+          padding: 128px 0 96px;
+        }
+        .clients-grid,
+        .phases-grid {
+          grid-template-columns: 1fr;
+        }
+        .diff-row {
+          grid-template-columns: 1fr;
+          gap: 14px;
+          padding: 32px 0;
+        }
+        .diff-row .diff-title {
+          font-size: 26px;
+        }
+        .service {
+          padding: 72px 0;
+        }
+        .offering-card .offering-title,
+        .phase-card .phase-title {
+          margin-top: 56px;
+        }
+        .cta-inner {
+          padding: 120px 0 96px;
+        }
+        .footer-inner {
+          flex-direction: column;
+          gap: 16px;
+          align-items: flex-start;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .nav-links,
+        .nav-cta-desktop {
+          display: none;
+        }
+        .nav-hamburger {
+          display: inline-flex;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- ==================== Nav ==================== -->
+    <nav class="nav" id="nav">
+      <div class="container nav-inner">
+        <a href="#top" class="wordmark">Neuralis</a>
+        <div class="nav-links">
+          <a href="#work">Work</a>
+          <a href="#services">Services</a>
+          <a href="#process">Process</a>
+          <a href="blog.html">Blog</a>
+          <a href="#contact">Contact</a>
+          <a href="#contact" class="nav-cta nav-cta-desktop">
+            Start a conversation
+          </a>
+        </div>
+        <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#work" data-close>Work</a>
+      <a href="#services" data-close>Services</a>
+      <a href="#process" data-close>Process</a>
+      <a href="blog.html" data-close>Blog</a>
+      <a href="#contact" data-close>Contact</a>
+      <a href="#contact" class="nav-cta" data-close>Start a conversation</a>
+    </div>
+
+    <!-- ==================== Hero ==================== -->
+    <section class="hero" id="top">
+      <div class="container hero-inner">
+        <span class="label reveal-sm"><span class="dot"></span>Who we are</span>
+        <h1 class="reveal" style="--reveal-delay: 0.1s">
+          Precision engineering
+          <span class="muted">for hard problems.</span>
+        </h1>
+        <p class="hero-body reveal" style="--reveal-delay: 0.25s">
+          Neuralis is a consulting studio that builds compilers,
+          high-performance compute pipelines, and autonomous AI agents for
+          teams that need production-grade precision. We work at the
+          intersection of systems engineering and applied intelligence.
+        </p>
+        <div class="hero-ctas reveal" style="--reveal-delay: 0.35s">
+          <a href="#work" class="btn btn-primary">
+            Our work <span class="arrow">→</span>
+          </a>
+          <a href="#contact" class="btn-link">
+            Start a conversation <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== Marquee ==================== -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <div class="marquee-item">
+          <span>Precision engineering for hard problems</span>
+          <span class="marquee-sep"></span>
+          <span>Scientific Computing</span>
+          <span class="marquee-sep"></span>
+          <span>Agentic AI</span>
+          <span class="marquee-sep"></span>
+          <span>Compiler Engineering</span>
+          <span class="marquee-sep"></span>
+        </div>
+        <div class="marquee-item">
+          <span>Precision engineering for hard problems</span>
+          <span class="marquee-sep"></span>
+          <span>Scientific Computing</span>
+          <span class="marquee-sep"></span>
+          <span>Agentic AI</span>
+          <span class="marquee-sep"></span>
+          <span>Compiler Engineering</span>
+          <span class="marquee-sep"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== Trusted by ==================== -->
+    <section class="trusted" id="work">
+      <div class="container section-inner">
+        <div class="section-head">
+          <div class="section-label reveal-sm">
+            <span class="label"><span class="dot"></span>Track record</span>
+          </div>
+          <h2 class="section-title reveal" style="--reveal-delay: 0.08s">
+            Trusted by teams <span class="muted">at the frontier.</span>
+          </h2>
+        </div>
+
+        <div class="clients-grid">
+          <article class="card client-card reveal-card" style="--reveal-delay: 0s">
+            <div class="client-logo">
+              <svg
+                class="logo-mark"
+                viewBox="0 0 55 52"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-label="Intraintel.ai logo"
+              >
+                <path
+                  d="M22.8067 27.3688V39.8217C22.8067 40.8922 22.3366 41.9087 21.5209 42.6021L16.0472 47.2547C14.6845 48.413 12.6832 48.413 11.3205 47.2547L5.84681 42.6021C5.03112 41.9087 4.56104 40.8922 4.56104 39.8217V18.3322C4.56104 17.0288 5.25625 15.8244 6.38491 15.1724L25.2976 4.2477C26.427 3.59531 27.8187 3.59531 28.9481 4.2477L47.8607 15.1724C48.9894 15.8244 49.6846 17.0288 49.6846 18.3322V39.8258C49.6846 40.8939 49.2166 41.9085 48.404 42.6018L42.9602 47.2465C41.5977 48.409 39.593 48.4109 38.2283 47.2509L32.7591 42.6021C31.9434 41.9087 31.4733 40.8922 31.4733 39.8217V27.3688"
+                  stroke="url(#ii-stroke)"
+                  stroke-width="3.64912"
+                  stroke-linecap="round"
+                />
+                <rect
+                  x="20.9819"
+                  y="20.0702"
+                  width="3.64912"
+                  height="3.64912"
+                  rx="1.82456"
+                  fill="url(#ii-dot-a)"
+                />
+                <rect
+                  x="29.6489"
+                  y="20.0702"
+                  width="3.64912"
+                  height="3.64912"
+                  rx="1.82456"
+                  fill="url(#ii-dot-b)"
+                />
+                <defs>
+                  <linearGradient
+                    id="ii-stroke"
+                    x1="27.2143"
+                    y1="-2.56104"
+                    x2="27.2143"
+                    y2="60.6729"
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop stop-color="#0068E5" />
+                    <stop offset="1" stop-color="#3898EC" />
+                  </linearGradient>
+                  <radialGradient
+                    id="ii-dot-a"
+                    cx="0"
+                    cy="0"
+                    r="1"
+                    gradientUnits="userSpaceOnUse"
+                    gradientTransform="translate(22.8065 21.8948) rotate(90) scale(1.82456)"
+                  >
+                    <stop stop-color="#3898EC" />
+                    <stop offset="1" stop-color="#0068E5" />
+                  </radialGradient>
+                  <radialGradient
+                    id="ii-dot-b"
+                    cx="0"
+                    cy="0"
+                    r="1"
+                    gradientUnits="userSpaceOnUse"
+                    gradientTransform="translate(31.4735 21.8948) rotate(90) scale(1.82456)"
+                  >
+                    <stop stop-color="#3898EC" />
+                    <stop offset="1" stop-color="#0068E5" />
+                  </radialGradient>
+                </defs>
+              </svg>
+              <span class="logo-text">Intraintel.ai</span>
+            </div>
+            <p class="client-body">
+              Architected autonomous DevOps and research agents, fusing
+              open-source and proprietary stacks into a unified intelligent
+              control plane.
+            </p>
+            <p class="client-quote">
+              "Neuralis helped us ship faster and with more confidence by
+              building the agentic backbone of our platform."
+            </p>
+            <p class="client-attr">Dev Roy — CEO</p>
+          </article>
+
+          <article class="card client-card reveal-card" style="--reveal-delay: 0.12s">
+            <div class="client-logo">
+              <svg
+                class="logo-wordmark"
+                viewBox="0 0 141 41"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-label="Equiti logo"
+              >
+                <path
+                  d="M132.28 0.823936H138.963C139.101 0.821165 139.238 0.846481 139.366 0.898346C139.494 0.950211 139.61 1.02754 139.707 1.12565C139.805 1.22375 139.881 1.34058 139.931 1.46904C139.982 1.5975 140.006 1.73492 140.002 1.87294V30.1129C140.002 30.5619 139.631 30.9369 138.963 30.9369H132.282C132.074 30.9092 131.881 30.8132 131.733 30.6642C131.585 30.5151 131.491 30.3213 131.465 30.1129V1.87294C131.449 1.62834 131.523 1.38637 131.674 1.19298C131.825 0.999598 132.041 0.868266 132.282 0.823936"
+                  fill="#00AFAA"
+                />
+                <path
+                  d="M93.7541 0.823975H100.435C100.676 0.868305 100.893 0.999637 101.043 1.19302C101.194 1.38641 101.268 1.62838 101.252 1.87297V30.113C101.251 30.33 101.165 30.5379 101.012 30.692C100.859 30.8461 100.652 30.9341 100.435 30.937H93.7541C93.51 30.9502 93.2695 30.8736 93.0781 30.7216C92.8866 30.5696 92.7575 30.3527 92.7151 30.112V1.87297C92.7194 1.59782 92.8299 1.33499 93.0236 1.13948C93.2172 0.943964 93.479 0.830911 93.7541 0.823975Z"
+                  fill="#00AFAA"
+                />
+                <path
+                  d="M119.364 8.68894H125.822C126.03 8.66116 126.223 8.56524 126.371 8.41617C126.519 8.26709 126.613 8.07325 126.639 7.86494V1.87294C126.668 1.62577 126.599 1.37705 126.446 1.18069C126.293 0.984336 126.069 0.856157 125.822 0.823936H106.893C106.755 0.821165 106.618 0.846481 106.49 0.898346C106.362 0.950211 106.246 1.02754 106.149 1.12565C106.051 1.22375 105.975 1.34058 105.925 1.46904C105.874 1.5975 105.85 1.73492 105.854 1.87294V7.78994C105.854 8.23894 106.225 8.61394 106.893 8.61394H110.901V20.2999C110.977 23.2825 112.229 26.1141 114.385 28.1769C116.54 30.2397 119.424 31.3663 122.407 31.3109H125.822C126.03 31.2832 126.223 31.1872 126.371 31.0382C126.519 30.8891 126.613 30.6953 126.639 30.4869V23.8949C126.638 23.6779 126.552 23.47 126.399 23.3159C126.246 23.1618 126.039 23.0738 125.822 23.0709H123.372C122.353 23.0336 121.382 22.6244 120.644 21.9207C119.906 21.2169 119.45 20.2673 119.364 19.2509V8.68894Z"
+                  fill="#00AFAA"
+                />
+                <path
+                  d="M88.335 1.72397C88.3339 1.50696 88.2477 1.29903 88.0949 1.14492C87.9421 0.990814 87.735 0.902855 87.518 0.899975H80.689C80.4809 0.927749 80.2878 1.02367 80.14 1.17274C79.9922 1.32182 79.898 1.51566 79.872 1.72397V22.547C78.4075 23.4273 76.7524 23.9418 75.047 24.047C74.4995 24.0755 73.952 23.9918 73.4381 23.801C72.9242 23.6102 72.4547 23.3164 72.0585 22.9376C71.6623 22.5588 71.3476 22.103 71.134 21.5981C70.9203 21.0933 70.8121 20.5501 70.816 20.002V1.87297C70.8452 1.62596 70.7759 1.37738 70.6232 1.18105C70.4705 0.984717 70.2466 0.856435 70 0.823975H63.171C62.9299 0.868305 62.7135 0.999637 62.5629 1.19302C62.4122 1.38641 62.3379 1.62838 62.354 1.87297V19.473C62.3453 22.4784 63.4874 25.3732 65.546 27.563C65.9028 28.0979 66.3874 28.5355 66.956 28.836C68.9762 30.3855 71.4623 31.2041 74.008 31.158H75.418C78.9962 31.2287 82.5532 30.5921 85.885 29.285C87.667 28.461 88.112 27.785 88.112 25.914L88.335 1.72397Z"
+                  fill="#00AFAA"
+                />
+                <path
+                  d="M18.558 12.509H8.537V11.236C8.537 11.236 8.76 7.191 12.768 7.191H14.55C18.558 7.191 18.558 11.236 18.558 11.236V12.509ZM27.02 11.685C27.023 10.1523 26.7239 8.63396 26.1397 7.21693C25.5554 5.7999 24.6976 4.51193 23.6152 3.42668C22.5329 2.34143 21.2472 1.48019 19.8317 0.89221C18.4162 0.304231 16.8987 0.00104846 15.366 0H11.729C8.62942 0.0114979 5.65943 1.2449 3.46356 3.43252C1.2677 5.62015 0.0231486 8.58549 0 11.685V19.325C-0.0284886 22.4751 1.18763 25.5091 3.38398 27.7674C5.58032 30.0258 8.57932 31.3258 11.729 31.385H13.729C19.593 31.385 23.829 29.512 26.051 26.067C26.868 24.344 26.422 23.295 25.012 22.696L22.2 20.974C20.567 20.15 19.973 20.374 19.008 21.798C17.82 23.298 16.187 23.898 13.738 23.898H12.545C8.537 23.898 8.537 19.853 8.537 19.853V18.8H24.051C24.4599 18.8554 24.876 18.8164 25.2675 18.6859C25.6589 18.5554 26.0153 18.3369 26.3091 18.0472C26.603 17.7575 26.8265 17.4043 26.9626 17.0147C27.0986 16.6252 27.1436 16.2096 27.094 15.8L27.02 11.68V11.685Z"
+                  fill="#00AFAA"
+                />
+                <path
+                  d="M55.455 2.1C52.245 0.788574 48.8217 0.0768062 45.355 0V7.191H47.137C47.4074 7.19374 47.6744 7.25068 47.9224 7.35844C48.1704 7.46621 48.3942 7.62262 48.5807 7.81841C48.7672 8.01421 48.9125 8.24541 49.008 8.49835C49.1036 8.75129 49.1474 9.02082 49.137 9.291V21.8C49.1454 22.3423 48.9405 22.8663 48.5665 23.259C48.1924 23.6518 47.6791 23.882 47.137 23.9H45.355V31.316C46.6528 31.2861 47.945 31.1358 49.215 30.867V38.957C49.1858 39.2042 49.2552 39.4529 49.4081 39.6492C49.561 39.8456 49.7852 39.9738 50.032 40.006H56.713C56.8518 40.0092 56.9898 39.984 57.1186 39.932C57.2473 39.8799 57.364 39.8021 57.4616 39.7033C57.5592 39.6045 57.6356 39.4868 57.686 39.3575C57.7364 39.2281 57.7599 39.0898 57.755 38.951V5.468C57.681 3.368 57.31 2.768 55.455 2.097"
+                  fill="#00AFAA"
+                />
+                <path
+                  d="M42.386 23.97C41.8529 23.9268 41.3543 23.6888 40.9855 23.3015C40.6166 22.9142 40.4032 22.4046 40.386 21.87V9.288C40.3776 8.74567 40.5825 8.22173 40.9565 7.82896C41.3306 7.43619 41.8439 7.20602 42.386 7.188H44.168V0H43.574C37.116 0 32.068 5.094 31.697 11.685V19.325C31.7018 22.4905 32.9489 25.5276 35.1701 27.783C37.3913 30.0384 40.409 31.3318 43.574 31.385H44.168V23.97H42.386Z"
+                  fill="#00AFAA"
+                />
+              </svg>
+            </div>
+            <p class="client-body">
+              Delivered high-performance computing infrastructure and
+              AI-driven automation for financial trading systems.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== What we build ==================== -->
+    <section class="offerings" id="offerings">
+      <div class="container section-inner">
+        <div class="section-head">
+          <div class="section-label reveal-sm">
+            <span class="label"><span class="dot"></span>Our offerings</span>
+          </div>
+          <h2 class="section-title reveal" style="--reveal-delay: 0.08s">
+            What we build <span class="muted">— end&#8209;to&#8209;end.</span>
+          </h2>
+          <p class="section-lede reveal" style="--reveal-delay: 0.18s">
+            Three disciplines, one engineering bench. Each engagement is
+            scoped, architected, and delivered from first principles.
+          </p>
+        </div>
+
+        <div class="offerings-grid">
+          <article class="card offering-card reveal-card" style="--reveal-delay: 0s">
+            <span class="offering-num">— 01</span>
+            <h3 class="offering-title">Agentic AI</h3>
+            <p class="offering-body">
+              Autonomous systems that reason, decide, and act.
+            </p>
+          </article>
+
+          <article class="card offering-card reveal-card" style="--reveal-delay: 0.1s">
+            <span class="offering-num">— 02</span>
+            <h3 class="offering-title">Scientific Computing</h3>
+            <p class="offering-body">
+              GPU-accelerated HPC for production workloads.
+            </p>
+          </article>
+
+          <article class="card offering-card reveal-card" style="--reveal-delay: 0.2s">
+            <span class="offering-num">— 03</span>
+            <h3 class="offering-title">Compiler Engineering</h3>
+            <p class="offering-body">
+              Custom toolchains and domain-specific languages.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== Services deep dive ==================== -->
+    <section class="services-wrap" id="services">
+      <div class="container section-inner">
+        <div class="section-head">
+          <div class="section-label reveal-sm">
+            <span class="label"><span class="dot"></span>Service deep dive</span>
+          </div>
+          <h2 class="section-title reveal" style="--reveal-delay: 0.08s">
+            Services, <span class="muted">in depth.</span>
+          </h2>
+          <p class="section-lede reveal" style="--reveal-delay: 0.18s">
+            From research prototype to production deployment — three
+            disciplines, delivered with rigor.
+          </p>
+        </div>
+
+        <!-- 01 -->
+        <div class="service">
+          <div class="service-grid">
+            <div class="service-head reveal">
+              <span class="label"><span class="dot"></span>Service 01</span>
+              <div class="service-meta">— Agentic AI</div>
+              <h3>Agentic AI.</h3>
+              <p class="service-body">
+                We build autonomous agents that orchestrate workflows, make
+                decisions, and scale across your infrastructure — from
+                research prototypes to production deployments.
+              </p>
+            </div>
+            <ol class="capability-list">
+              <li class="reveal-sm" style="--reveal-delay: 0s">
+                <span class="cap-num">01</span>
+                <span>Multi-agent orchestration with tool use and memory.</span>
+              </li>
+              <li class="reveal-sm" style="--reveal-delay: 0.06s">
+                <span class="cap-num">02</span>
+                <span>RAG pipelines with hybrid retrieval and reranking.</span>
+              </li>
+              <li class="reveal-sm" style="--reveal-delay: 0.12s">
+                <span class="cap-num">03</span>
+                <span>Workflow automation across APIs, databases, and infra.</span>
+              </li>
+              <li class="reveal-sm" style="--reveal-delay: 0.18s">
+                <span class="cap-num">04</span>
+                <span>Guardrails, evaluation, and observability built in.</span>
+              </li>
+              <li class="reveal-sm" style="--reveal-delay: 0.24s">
+                <span class="cap-num">05</span>
+                <span>Fine-tuning and prompt engineering for domain tasks.</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- 02 -->
+        <div class="service">
+          <div class="service-grid">
+            <div class="service-head reveal">
+              <span class="label"><span class="dot"></span>Service 02</span>
+              <div class="service-meta">— Scientific Computing</div>
+              <h3>Scientific Computing.</h3>
+              <p class="service-body">
+                HPC pipelines, GPU-accelerated workloads, and numerical
+                systems built for production-grade precision — from
+                simulation to deployment.
+              </p>
+            </div>
+            <ol class="capability-list">
+              <li class="reveal-sm" style="--reveal-delay: 0s">
+                <span class="cap-num">01</span>
+                <span>GPU-accelerated numerical simulations (CUDA, OpenCL).</span>
+              </li>
+              <li class="reveal-sm" style="--reveal-delay: 0.06s">
+                <span class="cap-num">02</span>
+                <span>HPC pipeline design for large-scale data processing.</span>
+              </li>
+              <li class="reveal-sm" style="--reveal-delay: 0.12s">
+                <span class="cap-num">03</span>
+                <span>Custom linear algebra and optimization kernels.</span>
+              </li>
+              <li class="reveal-sm" style="--reveal-delay: 0.18s">
+                <span class="cap-num">04</span>
+                <span>Cloud-native compute orchestration (Kubernetes, Slurm).</span>
+              </li>
+              <li class="reveal-sm" style="--reveal-delay: 0.24s">
+                <span class="cap-num">05</span>
+                <span>Performance profiling and bottleneck elimination.</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- 03 -->
+        <div class="service">
+          <div class="service-grid">
+            <div class="service-head reveal">
+              <span class="label"><span class="dot"></span>Service 03</span>
+              <div class="service-meta">— Compiler Engineering</div>
+              <h3>Compiler Engineering.</h3>
+              <p class="service-body">
+                Custom toolchains, LLVM optimizations, and domain-specific
+                languages that turn intent into performance — from parsing
+                to codegen.
+              </p>
+            </div>
+            <ol class="capability-list">
+              <li class="reveal-sm" style="--reveal-delay: 0s">
+                <span class="cap-num">01</span>
+                <span>LLVM-based compiler frontends and optimization passes.</span>
+              </li>
+              <li class="reveal-sm" style="--reveal-delay: 0.06s">
+                <span class="cap-num">02</span>
+                <span>Domain-specific language (DSL) design and implementation.</span>
+              </li>
+              <li class="reveal-sm" style="--reveal-delay: 0.12s">
+                <span class="cap-num">03</span>
+                <span>Code generation for custom hardware targets.</span>
+              </li>
+              <li class="reveal-sm" style="--reveal-delay: 0.18s">
+                <span class="cap-num">04</span>
+                <span>Static analysis tooling and linting frameworks.</span>
+              </li>
+              <li class="reveal-sm" style="--reveal-delay: 0.24s">
+                <span class="cap-num">05</span>
+                <span>Interpreter and runtime system development.</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== Engagement model ==================== -->
+    <section class="process" id="process">
+      <div class="container section-inner">
+        <div class="section-head">
+          <div class="section-label reveal-sm">
+            <span class="label"><span class="dot"></span>How we work</span>
+          </div>
+          <h2 class="section-title reveal" style="--reveal-delay: 0.08s">
+            Engagement model.
+          </h2>
+        </div>
+
+        <div class="phases-grid">
+          <article class="card phase-card reveal-card" style="--reveal-delay: 0s">
+            <div class="phase-label">— Phase 01</div>
+            <h3 class="phase-title">Discovery</h3>
+            <p class="phase-body">
+              We map your architecture, constraints, and goals in a focused
+              technical deep-dive.
+            </p>
+          </article>
+          <article class="card phase-card reveal-card" style="--reveal-delay: 0.08s">
+            <div class="phase-label">— Phase 02</div>
+            <h3 class="phase-title">Architecture</h3>
+            <p class="phase-body">
+              We design the system — data flows, APIs, infra — and align on
+              scope before writing code.
+            </p>
+          </article>
+          <article class="card phase-card reveal-card" style="--reveal-delay: 0.16s">
+            <div class="phase-label">— Phase 03</div>
+            <h3 class="phase-title">Build &amp; Ship</h3>
+            <p class="phase-body">
+              Iterative delivery with weekly demos. Production-ready code,
+              tested and documented.
+            </p>
+          </article>
+          <article class="card phase-card reveal-card" style="--reveal-delay: 0.24s">
+            <div class="phase-label">— Phase 04</div>
+            <h3 class="phase-title">Support</h3>
+            <p class="phase-body">
+              Post-launch monitoring, optimization, and knowledge transfer
+              to your team.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== What sets us apart ==================== -->
+    <section class="diff" id="why">
+      <div class="container section-inner">
+        <div class="section-head">
+          <div class="section-label reveal-sm">
+            <span class="label"><span class="dot"></span>Why us</span>
+          </div>
+          <h2 class="section-title reveal" style="--reveal-delay: 0.08s">
+            What sets us <span class="muted">apart.</span>
+          </h2>
+        </div>
+
+        <div class="diff-rows">
+          <div class="diff-row reveal" style="--reveal-delay: 0s">
+            <span class="diff-num">— 01</span>
+            <div>
+              <div class="diff-title">Deep technical bench.</div>
+              <p class="diff-body">
+                Our engineers have shipped compilers, HPC systems, and AI
+                agents at scale. We don't just consult — we build.
+              </p>
+            </div>
+          </div>
+
+          <div class="diff-row reveal" style="--reveal-delay: 0.1s">
+            <span class="diff-num">— 02</span>
+            <div>
+              <div class="diff-title">End-to-end ownership.</div>
+              <p class="diff-body">
+                From architecture to deployment, we own the outcome. No
+                hand-offs, no gaps.
+              </p>
+            </div>
+          </div>
+
+          <div class="diff-row reveal" style="--reveal-delay: 0.2s">
+            <span class="diff-num">— 03</span>
+            <div>
+              <div class="diff-title">Research-grade rigor.</div>
+              <p class="diff-body">
+                We bring academic depth to production problems —
+                peer-reviewed methods, battle-tested code.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== CTA — sunset gradient ==================== -->
+    <section class="cta" id="contact">
+      <div class="container cta-inner">
+        <span class="label reveal-sm"><span class="dot"></span>Get in touch</span>
+        <h2 class="reveal" style="--reveal-delay: 0.1s">
+          Let's build
+          <span class="muted">something remarkable.</span>
+        </h2>
+        <p class="cta-sub reveal" style="--reveal-delay: 0.22s">
+          Tell us about your systems, goals, and bottlenecks. We'll
+          architect the right solution.
+        </p>
+        <div class="cta-row reveal" style="--reveal-delay: 0.32s">
+          <a href="mailto:contact@neuralis.in" class="btn btn-inverse">
+            Start a conversation <span class="arrow">→</span>
+          </a>
+          <a href="tel:+919879765662" class="phone">+91 98797 65662</a>
+        </div>
+        <div class="cta-meta reveal-sm" style="--reveal-delay: 0.4s">
+          <a href="mailto:contact@neuralis.in">contact@neuralis.in</a> ·
+          <a href="https://neuralis.in">neuralis.in</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== Footer ==================== -->
+    <footer>
+      <div class="container footer-inner">
+        <div>© 2026 Neuralis</div>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://x.com" target="_blank" rel="noopener">X</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var nav = document.getElementById("nav");
+        var hamburger = document.getElementById("hamburger");
+        var body = document.body;
+        var menuLinks = document.querySelectorAll("[data-close]");
+
+        // --------- Nav: scroll-state toggle ---------
+        function onScroll() {
+          if (window.scrollY > 60) nav.classList.add("scrolled");
+          else nav.classList.remove("scrolled");
+        }
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+
+        // --------- Mobile menu ---------
+        hamburger.addEventListener("click", function () {
+          body.classList.toggle("menu-open");
+        });
+        menuLinks.forEach(function (a) {
+          a.addEventListener("click", function () {
+            body.classList.remove("menu-open");
+          });
+        });
+
+        // --------- Scroll reveal (IntersectionObserver) ---------
+        var revealEls = document.querySelectorAll(
+          ".reveal, .reveal-sm, .reveal-card"
+        );
+
+        // Graceful fallback if IO is unavailable: show everything.
+        if (!("IntersectionObserver" in window)) {
+          revealEls.forEach(function (el) {
+            el.classList.add("is-visible");
+          });
+          return;
+        }
+
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            threshold: 0.12,
+            rootMargin: "0px 0px -8% 0px",
+          }
+        );
+
+        revealEls.forEach(function (el) {
+          io.observe(el);
+        });
+      })();
+    </script>
   </body>
 </html>

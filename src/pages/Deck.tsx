@@ -1,8 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
 import { cn } from "../lib/utils";
-import logo from "../assets/neuralis-logo.png";
 import intraintelLogo from "../assets/intraintel-logo.svg";
 import equitiLogo from "../assets/equiti-logo.svg";
 
@@ -128,14 +126,6 @@ function SlideTitle() {
     <SlideWrapper>
       <div className="glow-spot w-[600px] h-[600px] bg-white/[0.025] top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2" />
       <div className="relative text-center max-w-4xl">
-        <motion.img
-          src={logo}
-          alt="Neuralis"
-          className="w-16 h-16 rounded-full mx-auto mb-8 object-contain"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6 }}
-        />
         <motion.h1
           className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05]"
           initial={{ opacity: 0, y: 20 }}
@@ -622,16 +612,11 @@ export function Deck() {
   return (
     <div className="noise relative h-screen w-screen bg-[#050505] text-white antialiased overflow-hidden select-none">
       <div className="fixed top-5 left-6 z-50 flex items-center gap-2">
-        <Link to="/" className="flex items-center gap-2 group">
-          <img
-            src={logo}
-            alt="Neuralis"
-            className="h-6 w-6 rounded-full object-contain"
-          />
+        <a href="/" className="flex items-center gap-2 group">
           <span className="text-xs font-semibold tracking-tight text-white/50 group-hover:text-white/80 transition-colors">
             Neuralis
           </span>
-        </Link>
+        </a>
       </div>
 
       <ProgressDots
