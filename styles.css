@@ -45,6 +45,8 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 body {
   background: var(--bg);
@@ -55,6 +57,12 @@ body {
   line-height: 1.45;
   letter-spacing: -0.01em;
   overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 a {
   color: inherit;
@@ -284,11 +292,12 @@ a.nav-cta:hover,
 }
 .nav-hamburger {
   display: none;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
+  margin-right: -8px;
 }
 .nav-hamburger span {
   position: relative;
@@ -334,6 +343,9 @@ body.menu-open .nav-hamburger span::after {
   align-items: center;
   justify-content: center;
   gap: 28px;
+  padding: 88px 24px calc(40px + env(safe-area-inset-bottom));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
@@ -381,12 +393,13 @@ body.menu-open .mobile-menu {
 }
 .page-hero h1 {
   font-family: var(--sans);
-  font-size: clamp(40px, 5.6vw, 80px);
+  font-size: clamp(32px, 5.6vw, 80px);
   font-weight: 800;
   letter-spacing: -0.035em;
-  line-height: 1.0;
+  line-height: 1.04;
   margin: 0;
   color: var(--text);
+  text-wrap: balance;
 }
 .page-hero h1 .muted {
   color: var(--text-3);
@@ -478,14 +491,15 @@ body.menu-open .mobile-menu {
   color: var(--accent);
 }
 .post-list .post-title {
-  font-size: clamp(28px, 3.6vw, 44px);
+  font-size: clamp(24px, 3.6vw, 44px);
   font-weight: 700;
   letter-spacing: -0.03em;
-  line-height: 1.05;
+  line-height: 1.1;
   margin: 0;
   color: var(--text);
   transition: color 0.3s ease;
   max-width: 900px;
+  text-wrap: balance;
 }
 .post-list .post-item:hover .post-title {
   color: var(--accent);
@@ -790,6 +804,11 @@ footer {
 }
 
 /* --------- Responsive --------- */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 36px;
+  }
+}
 @media (max-width: 960px) {
   .related-grid {
     grid-template-columns: 1fr 1fr;
@@ -802,38 +821,89 @@ footer {
   .section-inner {
     padding: 80px 0;
   }
+  .nav-inner {
+    height: 64px;
+  }
   .page-hero {
-    padding: 128px 0 48px;
+    padding: 120px 0 44px;
+  }
+  .page-hero .lede {
+    font-size: 17px;
+    margin-top: 22px;
+  }
+  .page-hero .post-meta {
+    gap: 12px 16px;
+    margin-top: 28px;
   }
   .post-list .post-item {
-    padding: 40px 16px;
+    padding: 36px 16px;
     margin: 0 -16px;
   }
   .post-list .post-item:hover {
-    padding-left: 28px;
+    padding-left: 24px;
+  }
+  .post-list .post-meta {
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .post-list .post-excerpt {
+    font-size: 16px;
+    margin-top: 16px;
+  }
+  .post-list .post-foot {
+    margin-top: 20px;
   }
   .article {
-    padding: 56px 0 80px;
+    padding: 48px 0 72px;
   }
   .prose {
     font-size: 17px;
+    line-height: 1.65;
   }
   .prose h2 {
-    font-size: 26px;
+    font-size: 24px;
+    margin-top: 1.6em;
   }
   .prose h3 {
-    font-size: 20px;
+    font-size: 19px;
+    margin-top: 1.6em;
+  }
+  .prose blockquote {
+    font-size: 18px;
+    padding-left: 18px;
+    margin: 1.4em 0;
+  }
+  .prose pre {
+    margin: 1.4em -16px;
+    padding: 18px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+  }
+  .article-foot {
+    margin-top: 56px;
+    padding-top: 28px;
   }
   .related {
     padding: 64px 0;
   }
+  .related .related-head {
+    margin-bottom: 36px;
+  }
   .related-grid {
     grid-template-columns: 1fr;
+  }
+  .related-card {
+    padding: 28px 24px;
   }
   .footer-inner {
     flex-direction: column;
     gap: 16px;
     align-items: flex-start;
+  }
+  .footer-links {
+    flex-wrap: wrap;
+    gap: 20px;
   }
 }
 @media (max-width: 640px) {
@@ -843,5 +913,103 @@ footer {
   }
   .nav-hamburger {
     display: inline-flex;
+  }
+  .mobile-menu a {
+    font-size: 28px;
+  }
+}
+@media (max-width: 480px) {
+  .container {
+    padding: 0 20px;
+  }
+  .section-inner {
+    padding: 64px 0;
+  }
+  .page-hero {
+    padding: 104px 0 36px;
+  }
+  .page-hero .lede {
+    font-size: 16px;
+  }
+  .post-list .post-item {
+    padding: 28px 12px;
+    margin: 0 -12px;
+  }
+  .post-list .post-item:hover {
+    padding-left: 18px;
+  }
+  .post-list .post-meta {
+    font-size: 11px;
+    gap: 8px;
+  }
+  .post-list .post-excerpt {
+    font-size: 15px;
+  }
+  .article {
+    padding: 36px 0 64px;
+  }
+  .prose {
+    font-size: 16px;
+  }
+  .prose h2 {
+    font-size: 22px;
+  }
+  .prose h3 {
+    font-size: 18px;
+  }
+  .prose blockquote {
+    font-size: 17px;
+  }
+  .prose pre {
+    margin: 1.2em -12px;
+    padding: 16px;
+    font-size: 12px;
+  }
+  .related {
+    padding: 56px 0;
+  }
+  .related-card {
+    padding: 24px 20px;
+    border-radius: 16px;
+  }
+  .related-card .title {
+    font-size: 18px;
+    margin-top: 22px;
+  }
+  .article-foot {
+    margin-top: 44px;
+  }
+  .footer-inner {
+    padding: 28px 0;
+  }
+}
+
+/* iOS safe-area handling for notched devices */
+@supports (padding: max(0px)) {
+  .nav-inner {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+  .container {
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+  }
+  @media (min-width: 481px) {
+    .container {
+      padding-left: max(24px, env(safe-area-inset-left));
+      padding-right: max(24px, env(safe-area-inset-right));
+    }
+  }
+  @media (min-width: 769px) {
+    .container {
+      padding-left: max(36px, env(safe-area-inset-left));
+      padding-right: max(36px, env(safe-area-inset-right));
+    }
+  }
+  @media (min-width: 1025px) {
+    .container {
+      padding-left: max(48px, env(safe-area-inset-left));
+      padding-right: max(48px, env(safe-area-inset-right));
+    }
   }
 }

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta
       name="description"
       content="Neuralis is a consulting studio that builds compilers, high-performance compute pipelines, and autonomous AI agents for teams that need production-grade precision."
@@ -94,6 +94,8 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-rendering: optimizeLegibility;
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
       }
       body {
         background: var(--bg);
@@ -104,6 +106,12 @@
         line-height: 1.45;
         letter-spacing: -0.01em;
         overflow-x: hidden;
+        -webkit-tap-highlight-color: transparent;
+      }
+      a,
+      button {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
       }
       a {
         color: inherit;
@@ -212,10 +220,10 @@
       }
       .section-title {
         font-family: var(--sans);
-        font-size: clamp(36px, 5vw, 64px);
+        font-size: clamp(30px, 5vw, 64px);
         font-weight: 700;
         letter-spacing: -0.03em;
-        line-height: 1.02;
+        line-height: 1.04;
         margin: 0;
         color: var(--text);
       }
@@ -416,11 +424,12 @@
 
       .nav-hamburger {
         display: none;
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
         align-items: center;
         justify-content: center;
         border-radius: 999px;
+        margin-right: -8px;
       }
       .nav-hamburger span {
         position: relative;
@@ -474,6 +483,9 @@
         align-items: center;
         justify-content: center;
         gap: 28px;
+        padding: 88px 24px calc(40px + env(safe-area-inset-bottom));
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.25s ease;
@@ -539,6 +551,7 @@
         position: relative;
         z-index: 1;
         min-height: 100vh;
+        min-height: 100dvh;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -553,12 +566,13 @@
       }
       .hero h1 {
         font-family: var(--sans);
-        font-size: clamp(52px, 8.6vw, 124px);
+        font-size: clamp(40px, 8.6vw, 124px);
         font-weight: 900;
         letter-spacing: -0.04em;
-        line-height: 0.95;
+        line-height: 0.98;
         margin: 32px 0 0;
         color: var(--text-inverse);
+        text-wrap: balance;
       }
       .hero h1 .muted {
         color: rgba(247, 243, 240, 0.5);
@@ -919,10 +933,10 @@
       }
       .service-head h3 {
         font-family: var(--sans);
-        font-size: clamp(36px, 4.6vw, 60px);
+        font-size: clamp(30px, 4.6vw, 60px);
         font-weight: 800;
         letter-spacing: -0.035em;
-        line-height: 0.98;
+        line-height: 1.0;
         margin: 0;
         color: var(--text);
       }
@@ -1164,13 +1178,14 @@
       }
       .cta h2 {
         font-family: var(--sans);
-        font-size: clamp(56px, 8vw, 124px);
+        font-size: clamp(40px, 8vw, 124px);
         font-weight: 900;
         letter-spacing: -0.04em;
-        line-height: 0.95;
+        line-height: 0.98;
         margin: 32px 0 0;
         color: var(--text-inverse);
         max-width: 1180px;
+        text-wrap: balance;
       }
       .cta h2 .muted {
         color: rgba(247, 243, 240, 0.55);
@@ -1249,6 +1264,9 @@
          Responsive
          ========================================================= */
       @media (max-width: 1024px) {
+        .container {
+          padding: 0 36px;
+        }
         .service-grid {
           gap: 64px;
         }
@@ -1274,35 +1292,123 @@
         .section-inner {
           padding: 88px 0;
         }
+        .section-head {
+          margin-bottom: 48px;
+        }
+        .section-lede {
+          font-size: 17px;
+        }
+        .nav-inner {
+          height: 64px;
+        }
+        .nav.scrolled {
+          background: rgba(249, 250, 251, 0.92);
+        }
         .hero-inner {
-          padding: 128px 0 96px;
+          padding: 120px 0 88px;
+          min-height: auto;
+        }
+        .hero-body {
+          font-size: 17px;
+          margin-top: 28px;
+        }
+        .hero-ctas {
+          margin-top: 36px;
+          gap: 16px 24px;
+        }
+        .hero-ctas .btn-primary {
+          padding: 14px 22px;
+          font-size: 14px;
+        }
+        .marquee {
+          padding: 22px 0;
+        }
+        .marquee-track {
+          gap: 36px;
+          animation-duration: 30s;
+        }
+        .marquee-item {
+          gap: 36px;
+        }
+        .client-card {
+          padding: 32px 28px;
+        }
+        .client-card .client-quote {
+          font-size: 16px;
         }
         .clients-grid,
         .phases-grid {
           grid-template-columns: 1fr;
         }
+        .card {
+          padding: 32px 28px;
+          border-radius: 18px;
+        }
+        .offering-card::before,
+        .phase-card::before {
+          top: 24px;
+          right: 24px;
+          font-size: 20px;
+        }
         .diff-row {
           grid-template-columns: 1fr;
           gap: 14px;
-          padding: 32px 0;
+          padding: 32px 16px;
+          margin: 0 -16px;
+        }
+        .diff-row:hover {
+          padding-left: 24px;
         }
         .diff-row .diff-title {
-          font-size: 26px;
+          font-size: 24px;
+        }
+        .diff-row .diff-body {
+          font-size: 16px;
         }
         .service {
           padding: 72px 0;
         }
+        .service-head .service-body {
+          font-size: 17px;
+        }
+        .capability-list li {
+          font-size: 16px;
+          grid-template-columns: 40px 1fr;
+          gap: 12px;
+          padding: 20px 0;
+        }
         .offering-card .offering-title,
         .phase-card .phase-title {
-          margin-top: 56px;
+          margin-top: 48px;
+          font-size: 24px;
+        }
+        .offering-card .offering-body,
+        .phase-card .phase-body {
+          font-size: 15px;
         }
         .cta-inner {
-          padding: 120px 0 96px;
+          padding: 112px 0 88px;
+        }
+        .cta-sub {
+          font-size: 17px;
+          margin-top: 28px;
+        }
+        .cta-row {
+          margin-top: 36px;
+          gap: 20px;
+        }
+        .btn-inverse {
+          padding: 16px 26px;
+          font-size: 15px;
         }
         .footer-inner {
           flex-direction: column;
           gap: 16px;
           align-items: flex-start;
+        }
+        .footer-links {
+          flex-wrap: wrap;
+          gap: 20px;
         }
       }
 
@@ -1313,6 +1419,188 @@
         }
         .nav-hamburger {
           display: inline-flex;
+        }
+        .mobile-menu a {
+          font-size: 28px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 0 20px;
+        }
+        .section-inner {
+          padding: 72px 0;
+        }
+        .section-head {
+          margin-bottom: 36px;
+        }
+        /* Soften the warm sun on small screens so text stays readable */
+        .hero::after {
+          height: 45%;
+        }
+        .hero-inner {
+          padding: 104px 0 72px;
+        }
+        .hero h1 {
+          margin-top: 24px;
+        }
+        .hero-body {
+          font-size: 16px;
+          line-height: 1.5;
+        }
+        .hero-ctas {
+          width: 100%;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 14px;
+          margin-top: 32px;
+        }
+        .hero-ctas .btn-primary {
+          justify-content: center;
+          width: 100%;
+          padding: 16px 22px;
+        }
+        .hero-ctas .btn-link {
+          justify-content: flex-start;
+        }
+        .marquee {
+          padding: 18px 0;
+        }
+        .marquee-track {
+          gap: 28px;
+          animation-duration: 26s;
+        }
+        .marquee-item {
+          gap: 28px;
+          font-size: clamp(22px, 6.4vw, 36px);
+        }
+        .marquee-sep {
+          width: 8px;
+          height: 8px;
+        }
+        .card {
+          padding: 28px 22px;
+          border-radius: 16px;
+        }
+        .client-card {
+          padding: 28px 22px;
+        }
+        .client-card .client-logo {
+          gap: 12px;
+          padding-bottom: 22px;
+          margin-bottom: 22px;
+        }
+        .client-card .logo-mark {
+          height: 32px;
+        }
+        .client-card .logo-wordmark {
+          height: 22px;
+        }
+        .client-card .logo-text {
+          font-size: 18px;
+        }
+        .client-card .client-body {
+          font-size: 15px;
+        }
+        .client-card .client-quote {
+          font-size: 15px;
+          margin-top: 24px;
+          padding-top: 22px;
+        }
+        .offering-card .offering-title,
+        .phase-card .phase-title {
+          margin-top: 36px;
+          font-size: 22px;
+        }
+        .service {
+          padding: 56px 0;
+        }
+        .service-grid {
+          gap: 36px;
+        }
+        .service-head .service-meta {
+          margin: 18px 0 24px;
+        }
+        .service-head .service-body {
+          font-size: 16px;
+          margin-top: 22px;
+        }
+        .capability-list li {
+          grid-template-columns: 32px 1fr;
+          gap: 10px;
+          padding: 18px 0;
+          font-size: 15px;
+        }
+        .capability-list li:hover {
+          padding-left: 6px;
+        }
+        .diff-row {
+          padding: 28px 12px;
+          margin: 0 -12px;
+        }
+        .diff-row:hover {
+          padding-left: 18px;
+        }
+        .diff-row .diff-title {
+          font-size: 22px;
+        }
+        .diff-row .diff-body {
+          font-size: 15px;
+          margin-top: 12px;
+        }
+        .cta-inner {
+          padding: 96px 0 80px;
+        }
+        .cta-sub {
+          font-size: 16px;
+        }
+        .cta-row {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 18px;
+          width: 100%;
+        }
+        .cta-row .btn-inverse {
+          width: 100%;
+          justify-content: center;
+        }
+        .cta-meta {
+          font-size: 11px;
+          margin-top: 28px;
+        }
+        .footer-inner {
+          padding: 28px 0;
+        }
+      }
+
+      /* iOS safe-area handling for notched devices */
+      @supports (padding: max(0px)) {
+        .nav-inner {
+          padding-left: max(0px, env(safe-area-inset-left));
+          padding-right: max(0px, env(safe-area-inset-right));
+        }
+        .container {
+          padding-left: max(20px, env(safe-area-inset-left));
+          padding-right: max(20px, env(safe-area-inset-right));
+        }
+        @media (min-width: 481px) {
+          .container {
+            padding-left: max(24px, env(safe-area-inset-left));
+            padding-right: max(24px, env(safe-area-inset-right));
+          }
+        }
+        @media (min-width: 769px) {
+          .container {
+            padding-left: max(36px, env(safe-area-inset-left));
+            padding-right: max(36px, env(safe-area-inset-right));
+          }
+        }
+        @media (min-width: 1025px) {
+          .container {
+            padding-left: max(48px, env(safe-area-inset-left));
+            padding-right: max(48px, env(safe-area-inset-right));
+          }
         }
       }
     </style>
