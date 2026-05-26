@@ -1,68 +1,10 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta
-      name="description"
-      content="Retrieval-augmented generation looks like a free upgrade. In production it fails in expensive, subtle ways."
-    />
-    <meta name="theme-color" content="#f9fafb" />
-    <meta property="og:title" content="The hidden cost of RAG — lessons from production — Neuralis" />
-    <meta
-      property="og:description"
-      content="Five deployments of lessons on hybrid retrieval, evaluation, latency budgets, and when fine-tuning actually wins."
-    />
-    <meta property="og:type" content="article" />
-    <title>The hidden cost of RAG — lessons from production — Neuralis</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fragment+Mono&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="../styles.css" />
-    <script>
-      document.documentElement.classList.add("js");
-    </script>
-  </head>
-  <body>
-    <nav class="nav" id="nav">
-      <div class="container nav-inner">
-        <a href="../index.html" class="wordmark">Neuralis</a>
-        <div class="nav-links">
-          <a href="../index.html#work">Work</a>
-          <a href="../index.html#services">Services</a>
-          <a href="../index.html#process">Process</a>
-          <a href="../blog.html" class="is-current">Blog</a>
-          <a href="../index.html#contact">Contact</a>
-          <a href="../index.html#contact" class="nav-cta nav-cta-desktop">
-            Start a conversation
-          </a>
-        </div>
-        <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
-          <span></span>
-        </button>
-      </div>
-    </nav>
-
-    <div class="mobile-menu" id="mobileMenu">
-      <a href="../index.html#work" data-close>Work</a>
-      <a href="../index.html#services" data-close>Services</a>
-      <a href="../index.html#process" data-close>Process</a>
-      <a href="../blog.html" data-close>Blog</a>
-      <a href="../index.html#contact" data-close>Contact</a>
-      <a href="../index.html#contact" class="nav-cta" data-close>Start a conversation</a>
-    </div>
-
     <article>
       <header class="page-hero">
         <div class="container container--narrow">
           <div class="breadcrumb reveal-sm">
             <span class="label">
               <span class="dot"></span>
-              <a href="../blog.html" style="opacity: 0.7">Field notes</a>
+              <a href="/blog" style="opacity: 0.7">Field notes</a>
               &nbsp;/&nbsp;Agentic AI
             </span>
           </div>
@@ -301,17 +243,17 @@
           <h2 class="reveal" style="--reveal-delay: 0.08s">More from the bench.</h2>
         </div>
         <div class="related-grid">
-          <a class="related-card reveal-card" href="building-multi-agent-systems.html" style="--reveal-delay: 0s">
+          <a class="related-card reveal-card" href="/blog/building-multi-agent-systems" style="--reveal-delay: 0s">
             <span class="tag">Agentic AI</span>
             <div class="title">Building production-grade multi-agent systems.</div>
             <div class="meta">14 May 2026 · 9 min</div>
           </a>
-          <a class="related-card reveal-card" href="llvm-for-compiler-engineering.html" style="--reveal-delay: 0.08s">
+          <a class="related-card reveal-card" href="/blog/llvm-for-compiler-engineering" style="--reveal-delay: 0.08s">
             <span class="tag">Compiler Engineering</span>
             <div class="title">Why we bet on LLVM for compiler engineering.</div>
             <div class="meta">02 May 2026 · 8 min</div>
           </a>
-          <a class="related-card reveal-card" href="beyond-cuda-heterogeneous-gpu.html" style="--reveal-delay: 0.16s">
+          <a class="related-card reveal-card" href="/blog/beyond-cuda-heterogeneous-gpu" style="--reveal-delay: 0.16s">
             <span class="tag">Scientific Computing</span>
             <div class="title">Beyond CUDA — the future of heterogeneous GPU computing.</div>
             <div class="meta">21 April 2026 · 10 min</div>
@@ -320,52 +262,3 @@
       </div>
     </section>
 
-    <footer>
-      <div class="container footer-inner">
-        <div>© 2026 Neuralis</div>
-        <div class="footer-links">
-          <a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
-          <a href="https://x.com" target="_blank" rel="noopener">X</a>
-          <a href="../index.html#contact">Contact</a>
-        </div>
-      </div>
-    </footer>
-
-    <script>
-      (function () {
-        var nav = document.getElementById("nav");
-        var hamburger = document.getElementById("hamburger");
-        var body = document.body;
-        var menuLinks = document.querySelectorAll("[data-close]");
-        function onScroll() {
-          if (window.scrollY > 60) nav.classList.add("scrolled");
-          else nav.classList.remove("scrolled");
-        }
-        window.addEventListener("scroll", onScroll, { passive: true });
-        onScroll();
-        hamburger.addEventListener("click", function () {
-          body.classList.toggle("menu-open");
-        });
-        menuLinks.forEach(function (a) {
-          a.addEventListener("click", function () {
-            body.classList.remove("menu-open");
-          });
-        });
-        var revealEls = document.querySelectorAll(".reveal, .reveal-sm, .reveal-card");
-        if (!("IntersectionObserver" in window)) {
-          revealEls.forEach(function (el) { el.classList.add("is-visible"); });
-          return;
-        }
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("is-visible");
-              io.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
-        revealEls.forEach(function (el) { io.observe(el); });
-      })();
-    </script>
-  </body>
-</html>
