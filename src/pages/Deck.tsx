@@ -245,7 +245,7 @@ function SlideAgenticAI() {
         </div>
         <p className="text-base md:text-lg text-white/40 leading-relaxed mb-12 max-w-2xl">
           We build autonomous agents that orchestrate workflows, make decisions,
-          and scale across your infrastructure — from research prototypes to
+          and scale across your infrastructure, from research prototypes to
           production deployments.
         </p>
         <div className="space-y-4">
@@ -288,7 +288,7 @@ function SlideScientificComputing() {
         </div>
         <p className="text-base md:text-lg text-white/40 leading-relaxed mb-12 max-w-2xl">
           HPC pipelines, GPU-accelerated workloads, and numerical systems built
-          for production-grade precision — from simulation to deployment.
+          for production-grade precision, from simulation to deployment.
         </p>
         <div className="space-y-4">
           {capabilities.map((cap, i) => (
@@ -330,7 +330,7 @@ function SlideCompilerEngineering() {
         </div>
         <p className="text-base md:text-lg text-white/40 leading-relaxed mb-12 max-w-2xl">
           Custom toolchains, LLVM optimizations, and domain-specific languages
-          that turn intent into performance — from parsing to codegen.
+          that turn intent into performance, from parsing to codegen.
         </p>
         <div className="space-y-4">
           {capabilities.map((cap, i) => (
@@ -358,7 +358,7 @@ function SlideProcess() {
     },
     {
       phase: "Architecture",
-      desc: "We design the system — data flows, APIs, infra — and align on scope before writing code.",
+      desc: "We design the system (data flows, APIs, infra) and align on scope before writing code.",
     },
     {
       phase: "Build & Ship",
@@ -465,7 +465,7 @@ function SlideWhyNeuralis() {
   const differentiators = [
     {
       title: "Deep technical bench",
-      desc: "Our engineers have shipped compilers, HPC systems, and AI agents at scale. We don't just consult — we build.",
+      desc: "Our engineers have shipped compilers, HPC systems, and AI agents at scale. We don't just consult; we build.",
     },
     {
       title: "End-to-end ownership",
@@ -473,7 +473,7 @@ function SlideWhyNeuralis() {
     },
     {
       title: "Research-grade rigor",
-      desc: "We bring academic depth to production problems — peer-reviewed methods, battle-tested code.",
+      desc: "We bring academic depth to production problems: peer-reviewed methods, battle-tested code.",
     },
   ];
 

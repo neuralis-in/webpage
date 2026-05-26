@@ -6,8 +6,8 @@ export function BlogIndex() {
   return (
     <PageShell
       html={blogIndexHtml}
-      title="Field notes — Neuralis"
-      description="Field notes from the Neuralis engineering bench — essays on compilers, agents, scientific computing, and shipping precision systems."
+      title="Field notes | Neuralis"
+      description="Field notes from the Neuralis engineering bench: essays on compilers, agents, scientific computing, and shipping precision systems."
     />
   );
 }

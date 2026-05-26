@@ -1,5 +1,5 @@
       /* =========================================================
-         Tokens — pulled directly from newgenre.studio's token table
+         Tokens: pulled directly from newgenre.studio's token table
          ========================================================= */
       :root {
         --bg: #f9fafb;            /* primary background (their canonical bg token) */
@@ -99,7 +99,7 @@
       }
 
       /* =========================================================
-         Scroll reveal — global fade-up animation
+         Scroll reveal: global fade-up animation
          Engaged only when JS is present (.js on <html>)
          ========================================================= */
       .js .reveal {
@@ -300,7 +300,7 @@
       }
 
       /* =========================================================
-         Nav — adaptive: transparent over cosmos hero, light when scrolled
+         Nav: adaptive transparent over cosmos hero, light when scrolled
          ========================================================= */
       .nav {
         position: fixed;
@@ -475,7 +475,7 @@
       }
 
       /* =========================================================
-         Hero — newgenre's signature cosmos gradient + sun glow
+         Hero: newgenre's signature cosmos gradient + sun glow
          ========================================================= */
       .hero {
         position: relative;
@@ -572,7 +572,7 @@
       }
 
       /* =========================================================
-         Marquee — newgenre's scroll-animated tagline band
+         Marquee: newgenre's scroll-animated tagline band
          ========================================================= */
       .marquee {
         position: relative;
@@ -642,7 +642,7 @@
       }
 
       /* =========================================================
-         Card — newgenre-style hover with lift, glow, accent border
+         Card: newgenre-style hover with lift, glow, accent border
          ========================================================= */
       .card {
         position: relative;
@@ -718,7 +718,7 @@
       }
 
       /* =========================================================
-         Trusted by — warm cream wash
+         Trusted by: warm cream wash
          ========================================================= */
       .trusted {
         background:
@@ -808,7 +808,7 @@
       }
 
       /* =========================================================
-         Offerings — pale yellow / ice wash
+         Offerings: pale yellow / ice wash
          ========================================================= */
       .offerings {
         border-top: 1px solid var(--border);
@@ -853,7 +853,7 @@
       }
 
       /* =========================================================
-         Service deep dive — warm cream
+         Service deep dive: warm cream
          ========================================================= */
       .services-wrap {
         border-top: 1px solid var(--border);
@@ -966,7 +966,7 @@
       }
 
       /* =========================================================
-         Engagement model — cool slate wash
+         Engagement model: cool slate wash
          ========================================================= */
       .process {
         border-top: 1px solid var(--border);
@@ -1011,7 +1011,7 @@
       }
 
       /* =========================================================
-         What sets us apart — warm yellow cream
+         What sets us apart: warm yellow cream
          ========================================================= */
       .diff {
         border-top: 1px solid var(--border);
@@ -1100,7 +1100,7 @@
       }
 
       /* =========================================================
-         CTA — newgenre sunset gradient
+         CTA: newgenre sunset gradient
          ========================================================= */
       .cta {
         position: relative;

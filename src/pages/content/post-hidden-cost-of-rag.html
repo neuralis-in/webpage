@@ -9,12 +9,12 @@
             </span>
           </div>
           <h1 class="reveal" style="--reveal-delay: 0.08s">
-            The hidden cost of RAG — lessons from production.
+            The hidden cost of RAG: lessons from production.
           </h1>
           <p class="lede reveal" style="--reveal-delay: 0.2s">
             Retrieval-augmented generation looks like a free upgrade. In
             production it fails in expensive, subtle ways. Five
-            deployments of lessons — on hybrid retrieval, evaluation,
+            deployments of lessons on hybrid retrieval, evaluation,
             latency budgets, and when fine-tuning wins instead.
           </p>
           <div class="post-meta reveal-sm" style="--reveal-delay: 0.3s">
@@ -48,7 +48,7 @@
             <p>
               The model can only reason about what's in its context. If
               retrieval is 70% accurate, your end-to-end accuracy is at
-              most 70% — and almost always meaningfully less, because
+              most 70%, and almost always meaningfully less, because
               the model has to identify and ignore the bad retrievals,
               which it often can't.
             </p>
@@ -89,7 +89,7 @@
               </li>
             </ul>
             <p>
-              Hybrid search — BM25 plus vector — handles all three. Add
+              Hybrid search (BM25 plus vector) handles all three. Add
               a <strong>reranker</strong> (a small cross-encoder, not
               your generation model) over the top, and retrieval
               accuracy roughly doubles on most internal benchmarks we've
@@ -124,7 +124,7 @@
               </li>
               <li>
                 <strong>Online behavioral metrics</strong> tied to user
-                behavior — click-through on cited sources, completion
+                behavior: click-through on cited sources, completion
                 rate, follow-up question patterns, escalation rate.
               </li>
               <li>
@@ -170,12 +170,12 @@
             <p>
               RAG is the right tool for one specific class of problem:
               <strong>large, evolving, must-be-cited knowledge</strong>.
-              For other problems, it's not the best tool — and the cost
+              For other problems, it's not the best tool, and the cost
               of using it anyway is real.
             </p>
             <p>
-              For narrow, stable knowledge — internal procedures,
-              well-defined troubleshooting trees, domain vocabularies —
+              For narrow, stable knowledge (internal procedures,
+              well-defined troubleshooting trees, domain vocabularies),
               fine-tuning routinely beats RAG. The model learns the
               patterns, not just the facts. No retrieval failure mode,
               lower latency, smaller infrastructure footprint.
@@ -209,8 +209,8 @@
             </p>
             <p>
               The teams that ship great RAG systems treat retrieval as
-              a first-class engineering discipline — with evaluation,
-              monitoring, latency budgets, and architectural rigor —
+              a first-class engineering discipline, with evaluation,
+              monitoring, latency budgets, and architectural rigor,
               not as a side effect of "we added a vector database."
             </p>
             <p>
@@ -255,7 +255,7 @@
           </a>
           <a class="related-card reveal-card" href="/blog/beyond-cuda-heterogeneous-gpu" style="--reveal-delay: 0.16s">
             <span class="tag">Scientific Computing</span>
-            <div class="title">Beyond CUDA — the future of heterogeneous GPU computing.</div>
+            <div class="title">Beyond CUDA: the future of heterogeneous GPU computing.</div>
             <div class="meta">21 April 2026 · 10 min</div>
           </a>
         </div>

@@ -14,7 +14,7 @@
           </h1>
           <p class="lede reveal" style="--reveal-delay: 0.2s">
             The leap from a demo agent to a production agent isn't
-            engineering. It's architectural surrender — to the unbounded
+            engineering. It's architectural surrender to the unbounded
             ways an LLM in a loop can fail your business.
           </p>
           <div class="post-meta reveal-sm" style="--reveal-delay: 0.3s">
@@ -35,7 +35,7 @@
               Most agent demos are linear: take a prompt, call a tool,
               return an answer. Production agents are concurrent,
               recoverable, observable, and bounded. The gap between the
-              two isn't in the model. It's in everything around it — and
+              two isn't in the model. It's in everything around it, and
               that everything is where the engineering actually lives.
             </p>
             <p>
@@ -49,8 +49,8 @@
             <h2>The myth of the autonomous agent</h2>
             <p>
               The word "autonomous" has done real architectural damage.
-              Teams hear it and reach for unsupervised loops — "let the
-              agent figure it out" — without considering what that
+              Teams hear it and reach for unsupervised loops ("let the
+              agent figure it out") without considering what that
               actually means when the agent can touch databases, deploy
               code, or move money.
             </p>
@@ -93,14 +93,14 @@
             </p>
             <p>
               The planner pattern decouples reasoning from execution.
-              It's not novel — it predates LLMs by decades — but in our
+              It's not novel (it predates LLMs by decades) but in our
               experience it's the only architecture that scales past 12
               steps without compounding errors:
             </p>
             <ol>
               <li>
                 A <strong>planner</strong> LLM proposes a structured plan
-                — typed JSON, not free text — describing each step's
+                (typed JSON, not free text) describing each step's
                 tool, inputs, and expected output.
               </li>
               <li>
@@ -114,8 +114,8 @@
                 row count match? Did the response schema validate?
               </li>
               <li>
-                On failure, the planner is invoked again — with the
-                partial state, the error, and the original goal — and
+                On failure, the planner is invoked again, with the
+                partial state, the error, and the original goal, and
                 produces a corrective plan.
               </li>
             </ol>
@@ -142,7 +142,7 @@
               </li>
               <li>
                 <strong>Episodic memory.</strong> A structured log of past
-                tasks — what was asked, what was done, what worked,
+                tasks: what was asked, what was done, what worked,
                 what failed. Queried by task type, user, time. This is
                 SQL territory, not vectors.
               </li>
@@ -226,7 +226,7 @@
                 and wall-clock.
               </li>
               <li>
-                <strong>Counterfactual breadcrumbs</strong> — what tools
+                <strong>Counterfactual breadcrumbs</strong>: what tools
                 were considered and not selected at each decision point.
               </li>
               <li>
@@ -248,7 +248,7 @@
             </p>
             <p>
               If your problem has bounded inputs, deterministic logic,
-              and clear success criteria — you don't need an agent. You
+              and clear success criteria, you don't need an agent. You
               need a function. We've watched teams reach for agentic
               frameworks to solve form validation problems. The framework
               is a tax you pay for non-determinism. Don't pay it unless
@@ -266,7 +266,7 @@
               it. The agent is the policy, not the runtime.
             </p>
             <p>
-              That separation — agent as orchestrator, code as executor —
+              That separation (agent as orchestrator, code as executor)
               is what makes the whole system testable, debuggable, and
               ultimately ownable. Everything else we've described here
               flows from it.
@@ -295,7 +295,7 @@
         <div class="related-grid">
           <a class="related-card reveal-card" href="/blog/hidden-cost-of-rag" style="--reveal-delay: 0s">
             <span class="tag">Agentic AI</span>
-            <div class="title">The hidden cost of RAG — lessons from production.</div>
+            <div class="title">The hidden cost of RAG: lessons from production.</div>
             <div class="meta">09 April 2026 · 8 min</div>
           </a>
           <a class="related-card reveal-card" href="/blog/llvm-for-compiler-engineering" style="--reveal-delay: 0.08s">
@@ -305,7 +305,7 @@
           </a>
           <a class="related-card reveal-card" href="/blog/beyond-cuda-heterogeneous-gpu" style="--reveal-delay: 0.16s">
             <span class="tag">Scientific Computing</span>
-            <div class="title">Beyond CUDA — the future of heterogeneous GPU computing.</div>
+            <div class="title">Beyond CUDA: the future of heterogeneous GPU computing.</div>
             <div class="meta">21 April 2026 · 10 min</div>
           </a>
         </div>

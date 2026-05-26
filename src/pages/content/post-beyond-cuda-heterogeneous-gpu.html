@@ -9,11 +9,11 @@
             </span>
           </div>
           <h1 class="reveal" style="--reveal-delay: 0.08s">
-            Beyond CUDA — the future of heterogeneous GPU computing.
+            Beyond CUDA: the future of heterogeneous GPU computing.
           </h1>
           <p class="lede reveal" style="--reveal-delay: 0.2s">
             CUDA has been the lingua franca of GPU compute for fifteen
-            years. That's about to change — and code written today
+            years. That's about to change, and code written today
             should be ready.
           </p>
           <div class="post-meta reveal-sm" style="--reveal-delay: 0.3s">
@@ -33,7 +33,7 @@
               For most of the last decade, "GPU compute" and "CUDA" were
               synonymous in the literature, in the curriculum, and in
               the recruiting funnel. That synonymy was always
-              technically wrong — but it was practically true. If you
+              technically wrong, but it was practically true. If you
               wanted production-grade GPU performance, CUDA was the
               path.
             </p>
@@ -51,7 +51,7 @@
               CUDA's API is excellent. It's also proprietary to NVIDIA.
               Every CUDA kernel you write is a deepening commitment to
               NVIDIA hardware, NVIDIA pricing, NVIDIA driver
-              compatibility, and — increasingly relevant — NVIDIA
+              compatibility, and (increasingly relevant) NVIDIA
               availability.
             </p>
             <p>
@@ -79,8 +79,8 @@
             <p>
               C++ kernels that compile to multiple backends. Code once,
               dispatch to NVIDIA, AMD, Intel, or even CPUs. Backed by
-              Intel and the Khronos Group. Mature for HPC. Growing —
-              fast — in ML.
+              Intel and the Khronos Group. Mature for HPC. Growing
+              fast in ML.
             </p>
             <p>
               SYCL is the closest thing to a vendor-neutral standard.
@@ -99,8 +99,8 @@
             </p>
             <p>
               Real progress in the last eighteen months. On AMD's MI300
-              accelerators, native HIP code is competitive with — and
-              sometimes exceeds — equivalent CUDA on NVIDIA hardware
+              accelerators, native HIP code is competitive with (and
+              sometimes exceeds) equivalent CUDA on NVIDIA hardware
               for certain workloads. The library coverage (rocBLAS,
               MIOpen, etc.) is closing the gap quickly.
             </p>
@@ -132,7 +132,7 @@
                 <strong>Warp/wavefront sizes differ.</strong> NVIDIA
                 hardware uses 32, AMD's CDNA uses 64 (with newer
                 architectures supporting 32 as well). Hardcode less,
-                query more — <code>warpSize</code> or its equivalent
+                query more: <code>warpSize</code> or its equivalent
                 exists in every dialect.
               </li>
               <li>
@@ -145,7 +145,7 @@
               <li>
                 <strong>Atomics, barriers, shuffles</strong> have direct
                 parallel implementations across vendors. Use
-                portability libraries — Kokkos, RAJA, OCCA — rather
+                portability libraries (Kokkos, RAJA, OCCA) rather
                 than raw vendor intrinsics where you can.
               </li>
             </ul>
@@ -153,7 +153,7 @@
             <h2>The performance trade-off</h2>
             <p>
               Portable kernels are, on average, slower than hand-tuned
-              vendor-specific kernels. The question isn't whether — the
+              vendor-specific kernels. The question isn't whether: the
               question is by how much, and whether it's worth it.
             </p>
             <p>What we've measured across our own workloads:</p>
@@ -171,7 +171,7 @@
               </li>
               <li>
                 Library-heavy workloads (BLAS, FFT, sparse) often see
-                <strong>no measurable gap</strong> — the vendor libraries
+                <strong>no measurable gap</strong>: the vendor libraries
                 dominate the kernel-level differences.
               </li>
             </ul>
@@ -222,7 +222,7 @@
               architected today should be planning for the world where
               vendor choice is a deployment-time decision, not a
               compile-time one. That's a different mental model for a
-              lot of teams — and it's the one we're building toward.
+              lot of teams, and it's the one we're building toward.
             </p>
           </div>
 
@@ -258,7 +258,7 @@
           </a>
           <a class="related-card reveal-card" href="/blog/hidden-cost-of-rag" style="--reveal-delay: 0.16s">
             <span class="tag">Agentic AI</span>
-            <div class="title">The hidden cost of RAG — lessons from production.</div>
+            <div class="title">The hidden cost of RAG: lessons from production.</div>
             <div class="meta">09 April 2026 · 8 min</div>
           </a>
         </div>

@@ -1,5 +1,5 @@
 /* ============================================================
-   Neuralis — Shared theme (used by blog index + posts)
+   Neuralis: Shared theme (used by blog index + posts)
    The homepage (index.html) keeps its own inline CSS to remain
    a fully self-contained single-file landing page.
    ============================================================ */
@@ -229,7 +229,7 @@ svg {
   transform: translateX(3px);
 }
 
-/* --------- Nav (opaque cream — no cosmos hero behind it) --------- */
+/* --------- Nav (opaque cream, no cosmos hero behind it) --------- */
 .nav {
   position: fixed;
   inset: 0 0 auto 0;

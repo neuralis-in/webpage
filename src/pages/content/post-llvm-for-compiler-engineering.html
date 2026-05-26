@@ -31,8 +31,8 @@
         <div class="container">
           <div class="prose">
             <p>
-              When a client asks for a custom compiler — for a new ISA, a
-              domain-specific language, a hardware accelerator — the
+              When a client asks for a custom compiler (for a new ISA, a
+              domain-specific language, a hardware accelerator) the
               first question we ask is: <em>why aren't you using LLVM?</em>
             </p>
             <p>
@@ -51,8 +51,8 @@
             </p>
             <p>
               The trap is that the parts you actually <em>care</em> about
-              — the domain semantics, the optimizations specific to your
-              workload, the calling convention to your accelerator — are
+              (the domain semantics, the optimizations specific to your
+              workload, the calling convention to your accelerator) are
               a small fraction of the work. The rest is undifferentiated
               compiler plumbing that LLVM solved twenty years ago.
             </p>
@@ -68,7 +68,7 @@
             <p>
               LLVM is not <em>a</em> compiler. It's a tower of compilers,
               presented as a library. Most of its value is the contract
-              the IR represents — a target-independent, SSA-form
+              the IR represents: a target-independent, SSA-form
               representation that lets you plug your work in at exactly
               the level it belongs.
             </p>
@@ -76,8 +76,8 @@
               <li>
                 <strong>The IR is the contract.</strong> If you can lower
                 your DSL to LLVM IR, you inherit every optimization pass
-                — inlining, dead code elimination, vectorization, loop
-                unrolling, alias analysis — for free.
+                (inlining, dead code elimination, vectorization, loop
+                unrolling, alias analysis) for free.
               </li>
               <li>
                 <strong>The backends ship target code.</strong> 30+
@@ -97,7 +97,7 @@
               to your domain. LLVM does the rest.
             </p>
 
-            <h2>Frontend, IR, or backend — pick your fight</h2>
+            <h2>Frontend, IR, or backend: pick your fight</h2>
             <p>
               "Use LLVM" isn't one decision. It's three, and they live at
               different layers of the stack. Knowing which layer your
@@ -120,13 +120,13 @@
             <p>
               You need a <strong>backend</strong>. Define your target's
               instruction set, register file, calling convention, ABI.
-              Inherit the language ecosystem — every LLVM-targeting
+              Inherit the language ecosystem: every LLVM-targeting
               compiler can now produce code for your hardware.
             </p>
             <p>
               Backends are intricate. The TableGen DSL has a learning
-              curve. Plan for that. But the payoff — every existing
-              language compiling to your accelerator — is enormous.
+              curve. Plan for that. But the payoff (every existing
+              language compiling to your accelerator) is enormous.
             </p>
 
             <h3>If you're extracting performance</h3>
@@ -136,7 +136,7 @@
             </p>
             <p>
               We've shipped custom passes that delivered 4-10x speedups
-              on specific workloads — typically by encoding domain
+              on specific workloads, typically by encoding domain
               invariants (alignment, alias freedom, value ranges) that
               the generic LLVM passes can't infer.
             </p>
@@ -155,9 +155,9 @@
               </li>
               <li>
                 <strong>Passes assume IR invariants.</strong> Break
-                them — for example, by emitting unreachable code with
+                them (for example, by emitting unreachable code with
                 live values, or by failing to insert
-                <code>llvm.assume</code> intrinsics — and you'll get
+                <code>llvm.assume</code> intrinsics) and you'll get
                 crashes deep in optimization with stack traces that look
                 nothing like your code.
               </li>
@@ -197,7 +197,7 @@
                 <strong>You need source-level transformations.</strong>
                 Refactoring tools, linters, codemods. Look at
                 Tree-sitter, libCST, Roslyn, or LSIF tooling. LLVM
-                operates below the source level — it's the wrong layer.
+                operates below the source level: it's the wrong layer.
               </li>
               <li>
                 <strong>You want to ship in a browser.</strong> LLVM
@@ -215,9 +215,9 @@
             </blockquote>
             <p>
               The bet we make at Neuralis is that for production
-              compiler work — the kind that has to outlive the team that
+              compiler work, the kind that has to outlive the team that
               wrote it, run on hardware that doesn't exist yet, or
-              extract single-digit-percent improvements at scale — LLVM
+              extract single-digit-percent improvements at scale, LLVM
               is almost always the right substrate.
             </p>
             <p>
@@ -249,7 +249,7 @@
         <div class="related-grid">
           <a class="related-card reveal-card" href="/blog/beyond-cuda-heterogeneous-gpu" style="--reveal-delay: 0s">
             <span class="tag">Scientific Computing</span>
-            <div class="title">Beyond CUDA — the future of heterogeneous GPU computing.</div>
+            <div class="title">Beyond CUDA: the future of heterogeneous GPU computing.</div>
             <div class="meta">21 April 2026 · 10 min</div>
           </a>
           <a class="related-card reveal-card" href="/blog/building-multi-agent-systems" style="--reveal-delay: 0.08s">
@@ -259,7 +259,7 @@
           </a>
           <a class="related-card reveal-card" href="/blog/hidden-cost-of-rag" style="--reveal-delay: 0.16s">
             <span class="tag">Agentic AI</span>
-            <div class="title">The hidden cost of RAG — lessons from production.</div>
+            <div class="title">The hidden cost of RAG: lessons from production.</div>
             <div class="meta">09 April 2026 · 8 min</div>
           </a>
         </div>

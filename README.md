@@ -1,6 +1,6 @@
 # Neuralis Website
 
-Neuralis — Scientific Computing, Compilers, and Open-source Agentic AI Consulting — is a React + TailwindCSS website that showcases consulting services for agentic intelligence systems, distributed agent frameworks, and compiler-grade performance engineering.
+Neuralis (Scientific Computing, Compilers, and Open-source Agentic AI Consulting) is a React + TailwindCSS website that showcases consulting services for agentic intelligence systems, distributed agent frameworks, and compiler-grade performance engineering.
 
 ## 🚀 Tech Stack
 - React 18 with Vite for fast dev + build cycles
@@ -35,4 +35,4 @@ npm run build
 - Tailor branding in `tailwind.config.js` and global utilities in `src/index.css`
 
 ## 🌌 Vision
-The experience leans into a minimalist, neon-futuristic aesthetic — reflecting Neuralis’s focus on agentic AI orchestration, HPC-oriented compilers, and open-source infrastructure.
+The experience leans into a minimalist, neon-futuristic aesthetic, reflecting Neuralis’s focus on agentic AI orchestration, HPC-oriented compilers, and open-source infrastructure.

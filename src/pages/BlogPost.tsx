@@ -16,25 +16,25 @@ type PostMeta = {
 const POSTS: Record<string, PostMeta> = {
   "building-multi-agent-systems": {
     html: multiAgentHtml,
-    title: "Building production-grade multi-agent systems — Neuralis",
+    title: "Building production-grade multi-agent systems | Neuralis",
     description:
-      "What changes when an LLM is allowed to touch your infrastructure — and why most agent frameworks ship the wrong defaults."
+      "What changes when an LLM is allowed to touch your infrastructure, and why most agent frameworks ship the wrong defaults."
   },
   "llvm-for-compiler-engineering": {
     html: llvmHtml,
-    title: "Why we bet on LLVM for compiler engineering — Neuralis",
+    title: "Why we bet on LLVM for compiler engineering | Neuralis",
     description:
       "A field-tested case for the IR-first approach to custom toolchains, DSLs, and accelerator targets."
   },
   "beyond-cuda-heterogeneous-gpu": {
     html: cudaHtml,
-    title: "Beyond CUDA — the future of heterogeneous GPU computing — Neuralis",
+    title: "Beyond CUDA: the future of heterogeneous GPU computing | Neuralis",
     description:
-      "A pragmatic look at SYCL, ROCm, oneAPI — and what portable kernels actually cost in production."
+      "A pragmatic look at SYCL, ROCm, oneAPI, and what portable kernels actually cost in production."
   },
   "hidden-cost-of-rag": {
     html: ragHtml,
-    title: "The hidden cost of RAG — lessons from production — Neuralis",
+    title: "The hidden cost of RAG: lessons from production | Neuralis",
     description:
       "Five deployments of lessons on hybrid retrieval, evaluation, latency budgets, and when fine-tuning actually wins."
   }
