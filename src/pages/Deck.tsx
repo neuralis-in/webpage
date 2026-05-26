@@ -408,7 +408,6 @@ function SlideClients() {
       work: "Architected autonomous DevOps and research agents, fusing open-source and proprietary stacks into a unified intelligent control plane.",
       quote:
         "Neuralis helped us ship faster and with more confidence by building the agentic backbone of our platform.",
-      attribution: "Dev Roy, CEO",
     },
     {
       name: "Equiti",
@@ -446,11 +445,6 @@ function SlideClients() {
                   <p className="text-sm text-white/30 italic leading-relaxed">
                     &ldquo;{c.quote}&rdquo;
                   </p>
-                  {c.attribution && (
-                    <p className="mt-3 text-xs font-medium tracking-wide text-white/20">
-                      {c.attribution}
-                    </p>
-                  )}
                 </div>
               )}
             </div>
