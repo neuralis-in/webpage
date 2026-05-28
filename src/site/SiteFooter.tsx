@@ -6,11 +6,12 @@ export function SiteFooter() {
       <div className="container footer-inner">
         <div>© 2026 Neuralis</div>
         <div className="footer-links">
-          <a href="https://www.linkedin.com" target="_blank" rel="noopener">
+          <a
+            href="https://www.linkedin.com/company/neuralis-in/"
+            target="_blank"
+            rel="noopener"
+          >
             LinkedIn
-          </a>
-          <a href="https://x.com" target="_blank" rel="noopener">
-            X
           </a>
           <Link to="/#contact">Contact</Link>
         </div>

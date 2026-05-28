@@ -1,5 +1,6 @@
 import { Navigate, useParams } from "react-router-dom";
 
+import complianceHtml from "./content/post-everything-everywhere-is-compliance.html?raw";
 import multiAgentHtml from "./content/post-building-multi-agent-systems.html?raw";
 import llvmHtml from "./content/post-llvm-for-compiler-engineering.html?raw";
 import cudaHtml from "./content/post-beyond-cuda-heterogeneous-gpu.html?raw";
@@ -14,6 +15,13 @@ type PostMeta = {
 };
 
 const POSTS: Record<string, PostMeta> = {
+  "everything-everywhere-is-compliance": {
+    html: complianceHtml,
+    title:
+      "Everything, everywhere is compliance | Neuralis",
+    description:
+      "Two thresholds have flipped in regulated AI: the model finally clears the bar, and the buyer finally leans in. What it takes to put agents into compliance workflows that survive an audit."
+  },
   "building-multi-agent-systems": {
     html: multiAgentHtml,
     title: "Building production-grade multi-agent systems | Neuralis",

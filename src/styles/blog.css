@@ -229,109 +229,53 @@ svg {
   transform: translateX(3px);
 }
 
-/* --------- Nav (opaque cream, no cosmos hero behind it) --------- */
-.nav {
-  position: fixed;
-  inset: 0 0 auto 0;
-  z-index: 50;
+/* ---------------------------------------------------------------
+   Nav overrides for blog routes: always opaque cream with dark text
+   (no cosmos hero behind it).
+
+   These rules need to beat the home-page nav rules in home.css, which
+   is imported after blog.css. Scoping with `.nav.is-blog` raises the
+   specificity above the bare `.nav` / `.nav.scrolled` rules in home.css
+   so the blog nav is legible from the first paint, not just after
+   scroll.
+   --------------------------------------------------------------- */
+.nav.is-blog {
   background: rgba(249, 250, 251, 0.82);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
   border-bottom: 1px solid transparent;
   transition: border-color 0.25s ease, background 0.25s ease;
 }
-.nav.scrolled {
+.nav.is-blog.scrolled {
   border-bottom-color: var(--border);
 }
-.nav-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 72px;
-}
-.wordmark {
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.025em;
+.nav.is-blog .wordmark {
   color: var(--text);
 }
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-}
-.nav-links a:not(.nav-cta) {
-  font-size: 14px;
-  font-weight: 500;
+.nav.is-blog .nav-links a:not(.nav-cta) {
   color: var(--text-2);
-  letter-spacing: -0.005em;
-  transition: color 0.25s ease;
 }
-.nav-links a:not(.nav-cta):hover,
-.nav-links a:not(.nav-cta).is-current {
+.nav.is-blog .nav-links a:not(.nav-cta):hover,
+.nav.is-blog .nav-links a:not(.nav-cta).is-current {
   color: var(--text);
 }
-a.nav-cta,
-.nav-links a.nav-cta {
-  padding: 11px 20px;
-  font-size: 14px;
-  font-weight: 500;
+.nav.is-blog a.nav-cta,
+.nav.is-blog .nav-links a.nav-cta {
   background: var(--text);
   color: var(--bg);
-  border-radius: 999px;
-  letter-spacing: -0.005em;
-  transition: background 0.25s ease, color 0.25s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
 }
-a.nav-cta:hover,
-.nav-links a.nav-cta:hover {
+.nav.is-blog a.nav-cta:hover,
+.nav.is-blog .nav-links a.nav-cta:hover {
   background: var(--accent);
   color: var(--bg);
 }
-.nav-hamburger {
-  display: none;
-  width: 44px;
-  height: 44px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  margin-right: -8px;
-}
-.nav-hamburger span {
-  position: relative;
-  display: block;
-  width: 18px;
-  height: 1.5px;
+.nav.is-blog .nav-hamburger span,
+.nav.is-blog .nav-hamburger span::before,
+.nav.is-blog .nav-hamburger span::after {
   background: var(--text);
 }
-.nav-hamburger span::before,
-.nav-hamburger span::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 18px;
-  height: 1.5px;
-  background: var(--text);
-  transition: transform 0.2s ease, top 0.2s ease, opacity 0.2s ease;
-}
-.nav-hamburger span::before {
-  top: -6px;
-}
-.nav-hamburger span::after {
-  top: 6px;
-}
-body.menu-open .nav-hamburger span {
+body.menu-open .nav.is-blog .nav-hamburger span {
   background: transparent;
-}
-body.menu-open .nav-hamburger span::before {
-  top: 0;
-  transform: rotate(45deg);
-}
-body.menu-open .nav-hamburger span::after {
-  top: 0;
-  transform: rotate(-45deg);
 }
 .mobile-menu {
   position: fixed;

@@ -59,7 +59,12 @@ export function SiteNav() {
 
   return (
     <>
-      <nav className={`nav${scrolled ? " scrolled" : ""}`} id="nav">
+      <nav
+        className={`nav${scrolled ? " scrolled" : ""}${
+          isBlog ? " is-blog" : ""
+        }`}
+        id="nav"
+      >
         <div className="container nav-inner">
           <Link to="/" className="wordmark">
             Neuralis

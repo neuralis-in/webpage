@@ -1,0 +1,426 @@
+    <!-- ==================== Page hero ==================== -->
+    <article>
+      <header class="page-hero">
+        <div class="container container--narrow">
+          <div class="breadcrumb reveal-sm">
+            <span class="label">
+              <span class="dot"></span>
+              <a href="/blog" style="opacity: 0.7">Field notes</a>
+              &nbsp;/&nbsp;Enterprise AI
+            </span>
+          </div>
+          <h1 class="reveal" style="--reveal-delay: 0.08s">
+            Everything, everywhere is compliance.
+          </h1>
+          <p class="lede reveal" style="--reveal-delay: 0.2s">
+            For two decades the response to rising regulation was to
+            hire another person. That equation is finally breaking.
+            What it actually takes to put agents into regulated
+            workflows — and why a 90% accurate compliance product is
+            still 100% wrong.
+          </p>
+          <div class="post-meta reveal-sm" style="--reveal-delay: 0.3s">
+            <strong>The Neuralis Team</strong>
+            <span class="sep"></span>
+            <span>28 May 2026</span>
+            <span class="sep"></span>
+            <span>10 min read</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- ==================== Body ==================== -->
+      <div class="article">
+        <div class="container">
+          <div class="prose">
+            <p>
+              Over the last twenty years the fastest-growing
+              occupation in the US was manicurists. Running close
+              behind, and almost nobody outside the industry noticed,
+              was <strong>compliance officers</strong>. There are now
+              more than 400,000 of them in the United States, with
+              33,000+ new openings projected annually. Title 12 of the
+              Code of Federal Regulations, which governs banking, grew
+              more between 2010 and 2014 than it had in the prior
+              thirty years combined.
+            </p>
+            <p>
+              The corporate response to that growth has been almost
+              comically simple: hire another person. And then another.
+              And then another. In 2024, TD Bank was fined $3 billion
+              for failing to monitor 92% of its transactions, sitting
+              on a backlog of 70,000 detection alerts that started in
+              2018. The pattern, an ever-larger team falling further
+              behind, has repeated at nearly every major financial
+              institution in the last decade.
+            </p>
+            <p>
+              Compliance is the canonical schlep work: bureaucratic,
+              paper-based, judgement-heavy, and historically a
+              graveyard for startups. So when we say it's now one of
+              the most engaging engineering problems in regulated
+              industry, we mean something specific. Two thresholds
+              have flipped at once, and the consequences for whoever
+              builds the next generation of regulated software are
+              large.
+            </p>
+
+            <h2>Threshold 1: the model finally clears the bar</h2>
+            <p>
+              In compliance the relevant accuracy bar is not "good
+              enough to demo." It's <strong>good enough to sign</strong>.
+              A KYC system that gets 90% of business onboardings right
+              is not a 90% success and a 10% inconvenience. It is a
+              100% legal exposure. Every customer the model gets
+              wrong is a regulator finding waiting to happen.
+            </p>
+            <p>
+              That asymmetry has held a generation of compliance AI
+              back. OCR works "mostly." Rule engines fire "mostly."
+              Mostly does not survive an audit. The shift in the last
+              eighteen months has been less about a single capability
+              and more about a stack of capabilities reaching the
+              audit-safe threshold together:
+            </p>
+            <ul>
+              <li>
+                <strong>Vision-language models</strong> that read a
+                400-page filing the way an analyst reads it. Not OCR
+                with a thesaurus, actual document understanding,
+                including layout, tables, signatures, and the
+                relationship between them.
+              </li>
+              <li>
+                <strong>Computer-use agents</strong> that drive the
+                legacy software a compliance officer drives. No
+                six-month API integration with a 1990s core banking
+                system. The agent uses the screen.
+              </li>
+              <li>
+                <strong>Long-horizon task execution</strong>: not "help
+                me draft this paragraph" but "pull the transaction
+                history, cross-check three databases, flag the
+                anomalies, file the SAR." Multi-step, multi-tool, with
+                state.
+              </li>
+              <li>
+                <strong>Legal-grade reasoning</strong>. Top models now
+                score in the 80-100% range on LegalBench's reasoning
+                tasks. Compliance is essentially applied legal
+                reasoning under operational constraints — read the
+                rule, apply it to a fact pattern, flag ambiguity.
+              </li>
+            </ul>
+            <p>
+              No single one of these gets a product through compliance
+              review. Together they do. The technology stopped being
+              good enough to pilot and became good enough to trust.
+            </p>
+
+            <h2>Threshold 2: the buyer finally leans in</h2>
+            <p>
+              The second flip is on the buyer side, and it matters at
+              least as much.
+            </p>
+            <p>
+              For thirty years, compliance functions had a single
+              dominant posture: change is the riskier option.
+              Migrations break audits. Audits break careers. So
+              GRC tools written in 2004 kept running in 2024, stitched
+              together by a human integration layer that copy-pasted
+              fields between screens.
+            </p>
+            <p>
+              Two things have broken that equilibrium. First,
+              compliance is no longer purely a cost center. Faster
+              KYC is faster onboarding is faster revenue. Better AML
+              monitoring is fewer false positives is fewer customer
+              relationships destroyed. The competitive argument is
+              now <strong>the cost of <em>not</em> modernizing is the
+              business one of your competitors will take from you</strong>.
+            </p>
+            <p>
+              Second, agents are about to become buyers. Identity
+              verification, intent inference, and liability allocation
+              were all designed around human counterparties. When the
+              party on the other side of a transaction is autonomous,
+              the regulatory primitives have to be rewritten. There
+              isn't a way to defer that conversation; the agents are
+              already here.
+            </p>
+            <blockquote>
+              A function that historically did not buy software has
+              started leaning in. Not because it wants to. Because it
+              has to.
+            </blockquote>
+
+            <h2>Where AI lands: three wedges</h2>
+            <p>
+              Strip a compliance function down to its primitives and
+              you find the same three ingredients everywhere:
+              <strong>regulation</strong> (the rules and policies),
+              <strong>software</strong> (the GRC platforms, case
+              tools, screening engines), and <strong>people</strong>
+              (the analysts moving data between the first two).
+              Almost every compliance task is some combination of:
+              extract information from a document, manually review
+              that information for inconsistencies, and repeat on a
+              cadence.
+            </p>
+            <p>
+              Take a Suspicious Activity Report. A transaction
+              monitoring system fires an alert. Sarah, the analyst,
+              opens the case, pivots to the core banking system to
+              pull transaction history, pivots again to a different
+              database for the KYC file, opens a shared drive for
+              onboarding documents, checks the internal policy
+              guideline, makes a judgement call, then returns to the
+              alert tool and writes a narrative by hand, copying
+              fields from each of the systems she just visited.
+            </p>
+            <p>
+              That sequence has three natural wedges for an AI
+              product. We've shipped against all three. They look
+              very different in code.
+            </p>
+
+            <h3>Wedge 1: turn regulation into code</h3>
+            <p>
+              Every new entry in Title 12, FINRA, the SEC, the CFTC,
+              and the fifty state-level variants lands as a PDF that
+              a person has to read, interpret, translate into
+              internal policy, and then watch for changes. This is
+              the most leveraged thing AI does in compliance: it
+              parses regulation into a structured, machine-checkable
+              set of obligations.
+            </p>
+            <p>
+              Two things change the moment regulation becomes code.
+              Monitoring shifts from periodic to continuous; a rule
+              that used to be sampled quarterly can be checked on
+              every transaction. And rule changes propagate through
+              an enterprise in minutes instead of quarters. The
+              compliance officer in Brazilian payroll whose entire
+              job is refreshing government sites for union-rule
+              changes stops being a refresh button.
+            </p>
+            <p>
+              The engineering cost is in the trust loop. Parsing a
+              regulation is not enough; you also have to keep an
+              auditable chain of custody from the original text to
+              the rule that fired to the decision the rule produced.
+              That chain is what makes the system defensible in
+              front of a regulator, and it's what most early
+              attempts at "AI for compliance" have skipped.
+            </p>
+
+            <h3>Wedge 2: replace the system of record</h3>
+            <p>
+              The deeper problem under most regulated enterprises is
+              that the system of record predates the cloud. Core
+              banking, mortgage servicing, employee oversight — these
+              ran on platforms designed for batch jobs and human
+              operators. The integration layer between them <em>is a
+              person</em>. That's the part you cannot AI your way
+              around without replacing the floor.
+            </p>
+            <p>
+              Buyers now have three real options, and each has its
+              own cost curve:
+            </p>
+            <ol>
+              <li>
+                <strong>Stay headless.</strong> Keep the legacy core,
+                build agents and new interfaces on top. Lowest
+                migration risk. Hard ceiling on what you can
+                automate, because the underlying system was never
+                designed to be read or written by software at speed.
+              </li>
+              <li>
+                <strong>Rebuild yourself.</strong> Vibe-code a
+                replacement system of record. Data model, permissions,
+                workflows, integrations, auditability. This is
+                tractable now in ways it wasn't five years ago, but
+                it is still the most expensive option to do correctly.
+              </li>
+              <li>
+                <strong>Buy an AI-native replacement.</strong> Move
+                onto a system built from day one for machine
+                readability, agent orchestration, and continuous
+                auditability. Highest near-term migration cost,
+                lowest long-term cost.
+              </li>
+            </ol>
+            <p>
+              The instinct in any risk-averse function is option (1).
+              The math of compounding AI advantage at competitors
+              eventually forces (2) or (3). Legacy systems were
+              built for humans: data is siloed, rules are hardcoded,
+              workflows run in batches. You can wrap an agent around
+              that. You cannot make it fast.
+            </p>
+
+            <h3>Wedge 3: augment the people</h3>
+            <p>
+              The third wedge is the one most teams reach for first,
+              and the one with the cleanest near-term ROI. Don't
+              replace the system. Don't rewrite the regulation. Drop
+              an agent in next to the analyst.
+            </p>
+            <p>
+              Business banking onboarding is the cleanest example.
+              The customer uploads incorporation documents, IDs,
+              financial statements. Today, an analyst extracts the
+              fields by hand, types them into three internal tools,
+              and runs sanctions and registry checks one at a time.
+              With a competent agent the documents are parsed
+              instantly, every database is queried in parallel, and
+              what reaches the human is the <em>exception</em> — the
+              one onboarding where something didn't match — not the
+              ninety-eight that did.
+            </p>
+            <p>
+              That shape — agent does the rote work, human reviews
+              the exceptions — is the dominant pattern we see in
+              every regulated deployment we've shipped. It also has
+              the easiest narrative for the Chief Risk Officer: no
+              system of record changes, no regulation is being
+              interpreted by software unilaterally, the human is
+              still on the decision.
+            </p>
+
+            <h2>What actually makes these systems shippable</h2>
+            <p>
+              The wedge you pick determines the demo. The engineering
+              underneath determines whether the system survives an
+              audit twelve months in. A few principles we keep
+              re-learning:
+            </p>
+            <ul>
+              <li>
+                <strong>Auditability is a first-class feature.</strong>
+                Every decision the agent takes needs a trail: which
+                rule fired, which version of the rule, which document
+                produced which field, which model was on the other
+                end. If a regulator asks "why did this account get
+                approved on March 14," you have eight minutes to
+                answer, not eight weeks.
+              </li>
+              <li>
+                <strong>Evaluation is the product.</strong> A
+                compliance system without continuous evaluation is
+                not a compliance system. Labelled sets curated from
+                real production traffic, offline metrics on every
+                model and prompt change, online metrics tied to
+                actual regulatory outcomes (SAR acceptance rate,
+                false-positive rate, exam findings).
+              </li>
+              <li>
+                <strong>Determinism where it matters.</strong> Use
+                the model to choose the strategy. Use deterministic
+                code to execute the strategy. A model decides
+                whether a transaction looks suspicious; a
+                deterministic pipeline writes the SAR. The
+                non-determinism stays in the policy layer, not the
+                execution layer.
+              </li>
+              <li>
+                <strong>Human-in-the-loop is a graph, not a
+                checkbox.</strong> Different decisions need different
+                review depths. Onboarding a new customer in a
+                low-risk jurisdiction is one signoff. Filing a SAR is
+                another. The system has to know which is which and
+                route accordingly.
+              </li>
+              <li>
+                <strong>Plan for the long tail.</strong> Compliance is
+                mostly the middle of the distribution, and entirely
+                the tails. The agent that handles the 80% easy cases
+                well and fails ungracefully on the 20% hard ones has
+                made the analyst's life worse, not better. Design
+                for the exceptions from day one.
+              </li>
+            </ul>
+
+            <h2>The convergence</h2>
+            <p>
+              The interesting thing about the three wedges is that
+              they converge. The team that wins a regulated category
+              eventually does all three. They turn the regulation
+              into code, because that's how the rules stay current.
+              They own the system of record, because that's where the
+              data and the audit trail live. They run a fleet of
+              agents on top, because that's how the work actually
+              gets done at speed.
+            </p>
+            <p>
+              The companies that look like piecemeal automation
+              today will look like full-stack regulated platforms in
+              three years. The compliance function inside those
+              platforms will look almost nothing like a 2024
+              compliance function: smaller, sharper, focused on the
+              exceptions and the policy work, with the analyst
+              acting more like a senior reviewer than a data entry
+              clerk.
+            </p>
+            <blockquote>
+              For the first time in the history of regulated
+              software, the question is not whether the technology
+              is good enough. It's whether the engineering team is
+              disciplined enough to ship it correctly.
+            </blockquote>
+            <p>
+              That last part is the part nobody is talking about
+              loudly enough. The hard work in regulated AI is not
+              the model. The model is finally fine. The hard work is
+              the audit trails, the evaluation harnesses, the
+              deterministic execution layers, the human review
+              graphs, and the slow patient labour of making a system
+              that a regulator will sign off on without a fight.
+            </p>
+            <p>
+              Everything, everywhere, is becoming compliance.
+              Compliance, in turn, is becoming engineering. That is
+              good news for the engineers.
+            </p>
+          </div>
+
+          <div class="article-foot">
+            <div class="tag-row">
+              <span class="tag">Enterprise AI</span>
+              <span class="tag">Compliance</span>
+              <span class="tag">Agents</span>
+              <span class="tag">Regulated Industries</span>
+              <span class="tag">Production</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ==================== Related posts ==================== -->
+    <section class="related">
+      <div class="container">
+        <div class="related-head">
+          <span class="label reveal-sm"><span class="dot"></span>Keep reading</span>
+          <h2 class="reveal" style="--reveal-delay: 0.08s">More from the bench.</h2>
+        </div>
+        <div class="related-grid">
+          <a class="related-card reveal-card" href="/blog/building-multi-agent-systems" style="--reveal-delay: 0s">
+            <span class="tag">Agentic AI</span>
+            <div class="title">Building production-grade multi-agent systems.</div>
+            <div class="meta">14 May 2026 · 9 min</div>
+          </a>
+          <a class="related-card reveal-card" href="/blog/hidden-cost-of-rag" style="--reveal-delay: 0.08s">
+            <span class="tag">Agentic AI</span>
+            <div class="title">The hidden cost of RAG: lessons from production.</div>
+            <div class="meta">09 April 2026 · 8 min</div>
+          </a>
+          <a class="related-card reveal-card" href="/blog/llvm-for-compiler-engineering" style="--reveal-delay: 0.16s">
+            <span class="tag">Compiler Engineering</span>
+            <div class="title">Why we bet on LLVM for compiler engineering.</div>
+            <div class="meta">02 May 2026 · 8 min</div>
+          </a>
+        </div>
+      </div>
+    </section>
